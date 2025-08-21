@@ -191,15 +191,16 @@ class OceanService:
         return forecasts
     
     def _get_fallback_ocean_data(self) -> Dict:
-        """Return fallback ocean data when services are unavailable"""
+        """Return error state when ocean APIs are unavailable"""
+        print("ERROR: Ocean data APIs unavailable. Real ocean conditions required for predictions.")
         return {
-            'sea_surface_temp': 26.5,
-            'chlorophyll': 0.15,
-            'current_strength': 'Moderate',
-            'current_direction': 'Southwest',
-            'upwelling_index': 0.4,
+            'sea_surface_temp': None,
+            'chlorophyll': None,
+            'current_strength': None,
+            'current_direction': None,
+            'upwelling_index': None,
             'timestamp': datetime.now().isoformat(),
-            'source': 'fallback'
+            'error': 'Ocean data APIs unavailable - predictions unreliable'
         }
     
     def update_ocean_data(self):

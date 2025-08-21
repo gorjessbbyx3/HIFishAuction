@@ -10,6 +10,7 @@ from prediction_model import PredictionModel
 from weather_service import WeatherService
 from ocean_service import OceanService
 from utils import format_currency, get_confidence_color, get_recommendation_icon
+from groq_service import GroqService
 import time
 
 # Page configuration
@@ -27,13 +28,17 @@ def init_services():
     prediction_model = PredictionModel()
     weather_service = WeatherService()
     ocean_service = OceanService()
-    return data_manager, prediction_model, weather_service, ocean_service
+    groq_service = GroqService()
+    return data_manager, prediction_model, weather_service, ocean_service, groq_service
 
 def main():
     st.title("🐟 Hawaii Fish Auction Price Predictor")
     st.markdown("### Strategic Prepayment Decision Support Tool")
     
-    data_manager, prediction_model, weather_service, ocean_service = init_services()
+    data_manager, prediction_model, weather_service, ocean_service, groq_service = init_services()
+    
+    # Data status dashboard
+    display_data_status_banner(data_manager, weather_service, ocean_service)
     
     # Sidebar for controls
     with st.sidebar:
@@ -72,7 +77,7 @@ def main():
         display_predictions_tab(data_manager, prediction_model, selected_species, prediction_days, investment_amount)
     
     with tab2:
-        display_market_analysis_tab(data_manager, prediction_model)
+        display_market_analysis_tab(data_manager, prediction_model, groq_service)
     
     with tab3:
         display_conditions_tab(weather_service, ocean_service)
@@ -184,7 +189,7 @@ def display_predictions_tab(data_manager, prediction_model, selected_species, pr
         st.error(f"Error generating predictions: {str(e)}")
         st.info("Please try updating the data or check your API connections.")
 
-def display_market_analysis_tab(data_manager, prediction_model):
+def display_market_analysis_tab(data_manager, prediction_model, groq_service):
     st.header("📊 Market Analysis Dashboard")
     
     try:
@@ -519,40 +524,99 @@ def assess_fishing_conditions(weather_data, ocean_data):
 def get_ai_explanation(prediction, current_conditions, selected_species):
     """Get AI-powered explanation using Groq API"""
     try:
-        from groq import Groq
+        groq_service = GroqService()
         
-        client = Groq(api_key=os.getenv("GROQ_API_KEY", ""))
-        
-        prompt = f"""
-        As a fish market analyst, explain the following Hawaii fish auction price prediction for {selected_species}:
-        
-        Prediction: {prediction.get('direction', 'stable')} price movement of {prediction.get('price_change_percent', 0):.1f}%
-        Confidence: {prediction.get('confidence', 0.5)*100:.0f}%
-        
-        Current conditions:
-        - Wind: {current_conditions.get('wind_speed', 0)} knots
-        - Storm warnings: {len(current_conditions.get('storm_warnings', []))}
-        - Sea temperature: {current_conditions.get('sea_surface_temp', 26.5)}°C
-        
-        Provide a clear, business-focused explanation for fish buyers about:
-        1. Why this prediction makes sense
-        2. Key factors driving the price movement
-        3. Recommended action for buyers
-        
-        Keep it concise and actionable.
-        """
-        
-        response = client.chat.completions.create(
-            model="llama3-8b-8192",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=300,
-            temperature=0.3
+        # Use the groq service for analysis
+        analysis = groq_service.analyze_market_conditions(
+            current_conditions, 
+            current_conditions, 
+            selected_species.lower().replace(' ', '_').replace('(', '').replace(')', ''),
+            prediction.get('direction', 'stable')
         )
         
-        return response.choices[0].message.content
+        return analysis.get('analysis', 'AI analysis unavailable')
         
     except Exception as e:
         return f"AI explanation unavailable: {str(e)}"
+
+def display_data_status_banner(data_manager, weather_service, ocean_service):
+    """Display current data integration status"""
+    st.info("**Data Integration Status**")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        # Check NOAA Weather API
+        try:
+            weather_data = weather_service.get_current_weather()
+            if weather_data.get('error'):
+                st.error("❌ NOAA Weather")
+                st.caption("API connection failed")
+            else:
+                st.success("✅ NOAA Weather")
+                st.caption("Real-time data active")
+        except:
+            st.error("❌ NOAA Weather")
+            st.caption("Connection failed")
+    
+    with col2:
+        # Check Ocean Data
+        try:
+            ocean_data = ocean_service.get_current_ocean_conditions()
+            if ocean_data.get('error'):
+                st.warning("⚠️ Ocean Data")
+                st.caption("Limited data available")
+            else:
+                st.success("✅ Ocean Data")
+                st.caption("Satellite data active")
+        except:
+            st.warning("⚠️ Ocean Data")
+            st.caption("Connection issues")
+    
+    with col3:
+        # Check Groq AI
+        groq_key = os.getenv('GROQ_API_KEY')
+        if groq_key:
+            st.success("✅ Groq AI")
+            st.caption("Market analysis active")
+        else:
+            st.error("❌ Groq AI")
+            st.caption("API key required")
+    
+    with col4:
+        # Check Historical Data
+        historical_data = data_manager.get_historical_price_data()
+        if historical_data is not None and not historical_data.empty:
+            st.success("✅ Historical Data")
+            st.caption("Auction data loaded")
+        else:
+            st.error("❌ Historical Data")
+            st.caption("Fish auction data needed")
+    
+    # Data requirements notice
+    if not groq_key or historical_data is None or historical_data.empty:
+        with st.expander("📋 Data Requirements & Integration Guide"):
+            st.markdown("""
+            **Required Data Sources for Full Functionality:**
+            
+            **Historical Fish Auction Data:**
+            - UFA Auction Sampling Data (1984–2002) from NOAA InPort
+            - Honolulu Retail Monitoring Fish Price Data (2016)
+            - WPacFIN Purchase Reports & Creel Surveys
+            
+            **Environmental Data APIs:**
+            - NOAA Weather Service API (weather.gov) ✅ Configured
+            - NOAA CoastWatch Ocean Data ⚠️ Limited
+            - Hawaii Mesonet for detailed local conditions
+            
+            **AI Analysis:**
+            - Groq API key for market analysis insights
+            
+            **Next Steps:**
+            1. Contact NOAA for historical auction data access
+            2. Integrate with Hawaii Fish Auction daily reports
+            3. Connect to PacIOOS for enhanced ocean forecasts
+            """)
 
 if __name__ == "__main__":
     main()

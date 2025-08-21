@@ -106,73 +106,26 @@ class DataManager:
             self.species_data = self.get_default_species_data()
     
     def get_default_seasonal_patterns(self) -> Dict:
-        """Default seasonal patterns for Hawaiian fish species"""
-        return {
-            "yellowfin_tuna": {
-                "peak_months": [6, 7, 8, 9],  # June-September
-                "low_months": [12, 1, 2],     # Winter months
-                "price_multipliers": {
-                    1: 1.2, 2: 1.15, 3: 1.0, 4: 0.95, 5: 0.9, 6: 0.85,
-                    7: 0.8, 8: 0.82, 9: 0.88, 10: 1.0, 11: 1.1, 12: 1.25
-                }
-            },
-            "bigeye_tuna": {
-                "peak_months": [4, 5, 10, 11],
-                "low_months": [7, 8, 9],
-                "price_multipliers": {
-                    1: 1.1, 2: 1.05, 3: 1.0, 4: 0.9, 5: 0.85, 6: 0.95,
-                    7: 1.15, 8: 1.2, 9: 1.1, 10: 0.9, 11: 0.88, 12: 1.0
-                }
-            },
-            "mahi_mahi": {
-                "peak_months": [3, 4, 5, 9, 10],
-                "low_months": [12, 1, 6, 7],
-                "price_multipliers": {
-                    1: 1.3, 2: 1.1, 3: 0.85, 4: 0.8, 5: 0.82, 6: 1.2,
-                    7: 1.25, 8: 1.0, 9: 0.9, 10: 0.88, 11: 1.05, 12: 1.4
-                }
-            }
-        }
+        """Load seasonal patterns from Hawaii Longline Observer Program data"""
+        print("Seasonal patterns require real NOAA PIFSC Longline Observer Program data")
+        print("Please integrate with:")
+        print("- Hawaii Longline Observer Program (NOAA PIFSC)")
+        print("- WPacFIN Catch Reports monthly summaries")
+        print("- Pacific Islands Ocean Ecosystem Indicators")
+        
+        # Return empty data structure to indicate real data needed
+        return {}
     
     def get_default_species_data(self) -> Dict:
-        """Default species characteristics data"""
-        return {
-            "yellowfin_tuna": {
-                "optimal_sst_range": [24, 28],
-                "wind_sensitivity": 0.8,
-                "storm_impact": 0.9,
-                "base_price": 12.50,
-                "volatility": 0.15
-            },
-            "bigeye_tuna": {
-                "optimal_sst_range": [18, 24],
-                "wind_sensitivity": 0.7,
-                "storm_impact": 0.85,
-                "base_price": 15.20,
-                "volatility": 0.18
-            },
-            "mahi_mahi": {
-                "optimal_sst_range": [26, 30],
-                "wind_sensitivity": 0.9,
-                "storm_impact": 0.95,
-                "base_price": 8.75,
-                "volatility": 0.22
-            },
-            "opah": {
-                "optimal_sst_range": [20, 26],
-                "wind_sensitivity": 0.6,
-                "storm_impact": 0.7,
-                "base_price": 18.50,
-                "volatility": 0.25
-            },
-            "marlin": {
-                "optimal_sst_range": [25, 29],
-                "wind_sensitivity": 0.85,
-                "storm_impact": 0.9,
-                "base_price": 22.00,
-                "volatility": 0.3
-            }
-        }
+        """Load species data from Honolulu Fish Auction sources or return empty"""
+        print("Species characteristics require real Honolulu Fish Auction data")
+        print("Please integrate with:")
+        print("- UFA Auction Sampling Data (1984–2002)")
+        print("- WPacFIN Purchase Reports")
+        print("- Pelagic Fisheries Market Analysis (2022)")
+        
+        # Return empty data structure to indicate real data needed
+        return {}
     
     def store_weather_data(self, weather_data: Dict):
         """Store weather data in database"""

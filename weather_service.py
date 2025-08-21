@@ -191,26 +191,29 @@ class WeatherService:
             return 0.1
     
     def _get_fallback_weather_data(self) -> Dict:
-        """Return fallback weather data when API is unavailable"""
+        """Return error state when NOAA API is unavailable"""
+        print("ERROR: NOAA Weather API connection failed. Real weather data required for predictions.")
         return {
-            'wind_speed': 12.0,
-            'wave_height': 3.5,
-            'storm_warnings': [],
-            'temperature': 26.5,
+            'wind_speed': None,
+            'wave_height': None,
+            'storm_warnings': ['API_ERROR: NOAA Weather API unavailable'],
+            'temperature': None,
             'timestamp': datetime.now().isoformat(),
-            'source': 'fallback'
+            'error': 'NOAA Weather API connection failed - predictions unavailable'
         }
     
     def _get_fallback_forecast(self, days_ahead: int) -> List[Dict]:
-        """Return fallback forecast data"""
+        """Return error state when forecast API fails"""
+        print("ERROR: NOAA Forecast API unavailable")
         forecasts = []
         for i in range(days_ahead):
             forecast = {
                 'date': (datetime.now() + timedelta(days=i)).strftime('%Y-%m-%d'),
-                'temperature': 26.5,
-                'wind_speed': 12.0,
-                'conditions': 'Partly Cloudy',
-                'storm_probability': 0.1
+                'temperature': None,
+                'wind_speed': None,
+                'conditions': 'API_ERROR',
+                'storm_probability': None,
+                'error': 'NOAA Forecast API unavailable'
             }
             forecasts.append(forecast)
         return forecasts
