@@ -624,9 +624,31 @@ def display_data_status_banner(data_manager, weather_service, ocean_service):
             try:
                 from noaa_data_integration import NOAADataIntegration
                 noaa_integration = NOAADataIntegration()
+                
+                # Test new data sources
+                st.markdown("### 🔗 NOAA Data Sources Status")
+                
+                # Check fisheries data catalog
+                with st.spinner("Checking NOAA Fisheries Data Catalog..."):
+                    catalog_status = noaa_integration.check_noaa_fisheries_data_catalog()
+                    if catalog_status['status'] == 'Available':
+                        st.success(f"✅ NOAA Fisheries Data Catalog - {catalog_status.get('hawaii_specific_datasets', 0)} Hawaii datasets found")
+                    else:
+                        st.warning(f"⚠️ NOAA Fisheries Data Catalog - {catalog_status['status']}")
+                
+                # Check FEAT system
+                with st.spinner("Checking FEAT Performance Indicators..."):
+                    feat_status = noaa_integration.access_feat_performance_indicators()
+                    if 'Accessible' in feat_status['status']:
+                        st.success(f"✅ FEAT Performance Indicators - {feat_status['status']}")
+                    else:
+                        st.warning(f"⚠️ FEAT Performance Indicators - {feat_status['status']}")
+                
+                # Generate full report
                 integration_report = noaa_integration.generate_integration_report()
                 
-                st.text(integration_report)
+                with st.expander("📋 Full Integration Report", expanded=False):
+                    st.text(integration_report)
                 
                 # Contact information section
                 st.markdown("---")

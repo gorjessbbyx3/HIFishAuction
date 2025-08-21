@@ -12,6 +12,8 @@ class NOAADataIntegration:
     def __init__(self):
         self.inport_base_url = "https://www.fisheries.noaa.gov/inport"
         self.data_gov_base_url = "https://catalog.data.gov/api/3/action"
+        self.fisheries_data_url = "https://www.fisheries.noaa.gov/resources/data"
+        self.feat_base_url = "https://apps-pifsc.fisheries.noaa.gov/FEAT"
         
         # NOAA InPort data identifiers
         self.data_sources = {
@@ -63,6 +65,121 @@ class NOAADataIntegration:
             'confidentiality': 'Fisheries confidential data - requires signed non-disclosure statement'
         }
     
+    def check_noaa_fisheries_data_catalog(self) -> Dict:
+        """Check availability of NOAA fisheries data catalog"""
+        try:
+            print("Accessing NOAA Fisheries Data Catalog...")
+            
+            response = requests.get(self.fisheries_data_url, timeout=15)
+            
+            if response.status_code == 200:
+                # Parse the page to find relevant datasets
+                content = response.text
+                
+                # Look for Hawaii-specific datasets
+                hawaii_datasets = self._extract_hawaii_fisheries_datasets(content)
+                
+                return {
+                    'status': 'Available',
+                    'catalog_accessible': True,
+                    'hawaii_specific_datasets': len(hawaii_datasets),
+                    'relevant_data_types': [
+                        'Commercial fisheries landings',
+                        'Fishery-dependent data',
+                        'Economic and social data',
+                        'Pacific Islands fisheries data',
+                        'Stock assessments',
+                        'Fleet activity reports'
+                    ],
+                    'integration_priority': 'High - comprehensive fisheries data source'
+                }
+            else:
+                return {
+                    'status': 'Limited Access',
+                    'message': f'HTTP {response.status_code} - catalog may require navigation'
+                }
+                
+        except Exception as e:
+            return {
+                'status': 'Connection Failed',
+                'error': str(e),
+                'fallback': 'Manual navigation to fisheries data catalog required'
+            }
+    
+    def access_feat_performance_indicators(self) -> Dict:
+        """Access FEAT performance indicators for Pacific Islands fisheries"""
+        try:
+            print("Accessing FEAT Performance Indicators...")
+            
+            feat_indicators_url = f"{self.feat_base_url}/#/report/performance-indicators"
+            response = requests.get(feat_indicators_url, timeout=15)
+            
+            if response.status_code == 200:
+                return {
+                    'status': 'FEAT System Accessible',
+                    'performance_indicators_available': True,
+                    'data_types': [
+                        'Commercial fishing fleet performance',
+                        'Catch per unit effort (CPUE)',
+                        'Revenue and cost analysis',
+                        'Fleet composition metrics',
+                        'Fishing effort statistics',
+                        'Economic performance indicators'
+                    ],
+                    'hawaii_relevance': {
+                        'longline_fleet_metrics': 'Direct impact on fish supply',
+                        'cpue_trends': 'Predictor of catch abundance',
+                        'economic_indicators': 'Market condition insights',
+                        'fleet_activity': 'Supply availability forecasting'
+                    },
+                    'integration_value': 'High - real-time fleet performance affects auction supply',
+                    'next_steps': 'Investigate FEAT API access or data export capabilities'
+                }
+            else:
+                return {
+                    'status': 'FEAT Access Issue',
+                    'message': f'HTTP {response.status_code} - may require authentication or direct navigation'
+                }
+                
+        except Exception as e:
+            return {
+                'status': 'FEAT Connection Failed',
+                'error': str(e),
+                'recommendation': 'Manual access to FEAT system may be required'
+            }
+    
+    def _extract_hawaii_fisheries_datasets(self, html_content: str) -> List[str]:
+        """Extract Hawaii-specific fisheries datasets from NOAA catalog"""
+        try:
+            import re
+            
+            # Look for Hawaii-related dataset patterns
+            hawaii_patterns = [
+                r'href="([^"]*hawaii[^"]*)"',
+                r'href="([^"]*pacific.*island[^"]*)"',
+                r'href="([^"]*honolulu[^"]*)"',
+                r'href="([^"]*longline[^"]*)"'
+            ]
+            
+            datasets = []
+            for pattern in hawaii_patterns:
+                matches = re.findall(pattern, html_content, re.IGNORECASE)
+                datasets.extend(matches)
+            
+            # Clean and filter datasets
+            cleaned_datasets = []
+            for dataset in datasets:
+                if dataset.startswith('/'):
+                    dataset = 'https://www.fisheries.noaa.gov' + dataset
+                if dataset not in cleaned_datasets:
+                    cleaned_datasets.append(dataset)
+            
+            return cleaned_datasets[:10]  # Return top 10 matches
+            
+        except Exception as e:
+            print(f"Error extracting Hawaii datasets: {str(e)}")
+            return []
+
     def fetch_undercurrent_market_data(self) -> Optional[pd.DataFrame]:
         """Fetch global seafood market data from Undercurrent News"""
         try:
@@ -342,6 +459,29 @@ class NOAADataIntegration:
         
         report = ["HAWAII FISH AUCTION DATA INTEGRATION STATUS", "=" * 60, ""]
         
+        # Check new data sources
+        fisheries_catalog = self.check_noaa_fisheries_data_catalog()
+        feat_status = self.access_feat_performance_indicators()
+        
+        # NOAA Fisheries Data Catalog
+        report.extend([
+            "🗃️  NOAA FISHERIES DATA CATALOG",
+            f"   Status: {fisheries_catalog['status']}",
+            f"   URL: {self.fisheries_data_url}",
+            f"   Hawaii Datasets Found: {fisheries_catalog.get('hawaii_specific_datasets', 0)}",
+            f"   Integration Priority: {fisheries_catalog.get('integration_priority', 'Unknown')}",
+            ""
+        ])
+        
+        # FEAT Performance Indicators
+        report.extend([
+            "📊 FEAT PERFORMANCE INDICATORS",
+            f"   Status: {feat_status['status']}",
+            f"   URL: {self.feat_base_url}/#/report/performance-indicators",
+            f"   Integration Value: {feat_status.get('integration_value', 'Unknown')}",
+            ""
+        ])
+        
         # UFA Auction Data - Primary Source
         ufa_info = self.fetch_ufa_auction_data()
         report.extend([
@@ -387,22 +527,34 @@ class NOAADataIntegration:
         # Critical next steps
         report.extend([
             "🔑 CRITICAL NEXT STEPS:",
-            "1. NOAA UFA DATA ACCESS:",
+            "1. NOAA FISHERIES DATA CATALOG EXPLORATION:",
+            f"   - Navigate to {self.fisheries_data_url}",
+            "   - Search for 'Hawaii', 'Pacific Islands', and 'longline' datasets",
+            "   - Identify downloadable CSV/Excel files for historical data",
+            "   - Focus on commercial fisheries landings and fleet statistics",
+            "",
+            "2. FEAT SYSTEM INTEGRATION:",
+            f"   - Access {self.feat_base_url}/#/report/performance-indicators",
+            "   - Investigate API endpoints or data export capabilities",
+            "   - Extract fleet performance and CPUE data for supply forecasting",
+            "   - Monitor economic indicators affecting fish prices",
+            "",
+            "3. NOAA UFA DATA ACCESS (PRIMARY):",
             "   - Email ashley.tomita@noaa.gov for access to 1.9M auction records",
             "   - Complete PIFSC non-disclosure agreement",
             "   - Request data steward approval (keith.bigelow@noaa.gov)",
             "",
-            "2. GLOBAL MARKET INTEGRATION:",
+            "4. GLOBAL MARKET INTEGRATION:",
             "   - Evaluate Undercurrent News subscription for international context",
             "   - Assess Pacific tuna market pricing correlations",
             "",
-            "3. TECHNICAL IMPLEMENTATION:",
+            "5. TECHNICAL IMPLEMENTATION:",
             "   - Design secure data handling for confidential fisheries data",
             "   - Implement automated data validation and quality checks",
             "   - Create prediction model training pipeline with authentic data",
             "",
-            "📊 IMPACT: With UFA auction data, the system will have 18 years of authentic",
-            "    Hawaii fish auction prices for accurate prediction modeling.",
+            "📊 IMPACT: Comprehensive NOAA integration will provide real-time fleet",
+            "    performance data and 18+ years of authentic Hawaii auction prices.",
             ""
         ])
         

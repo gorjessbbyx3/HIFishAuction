@@ -234,7 +234,9 @@ def display_data_integration_capabilities():
             st.markdown("#### Authentic Data Sources")
             st.markdown("""
             **NOAA Sources:**
+            - NOAA Fisheries Data Catalog (fisheries.noaa.gov/resources/data)
             - Pacific Islands Fishery Ecosystem Analysis Tool (FEAT)
+            - FEAT Performance Indicators (fleet metrics, CPUE, economics)
             - Hawaii & California Longline Logbook Data
             - American Samoa Longline Logbook Data
             - Weather Service API
