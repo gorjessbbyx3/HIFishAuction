@@ -1,0 +1,332 @@
+{
+  "yellowfin_tuna": {
+    "common_names": ["Ahi", "Yellowfin Tuna", "Yellow Fin"],
+    "scientific_name": "Thunnus albacares",
+    "base_price": 12.50,
+    "volatility": 0.15,
+    "optimal_sst_range": [24, 28],
+    "wind_sensitivity": 0.8,
+    "storm_impact": 0.9,
+    "size_categories": {
+      "small": {"weight_range": [20, 60], "price_modifier": 0.85},
+      "medium": {"weight_range": [60, 120], "price_modifier": 1.0},
+      "large": {"weight_range": [120, 200], "price_modifier": 1.15},
+      "extra_large": {"weight_range": [200, 400], "price_modifier": 1.3}
+    },
+    "grade_categories": {
+      "sashimi": {"price_modifier": 1.4, "quality_requirements": "highest"},
+      "premium": {"price_modifier": 1.2, "quality_requirements": "high"},
+      "standard": {"price_modifier": 1.0, "quality_requirements": "medium"},
+      "commercial": {"price_modifier": 0.8, "quality_requirements": "low"}
+    },
+    "biological_characteristics": {
+      "average_weight_lbs": 85,
+      "max_weight_lbs": 400,
+      "average_length_inches": 48,
+      "lifespan_years": 7,
+      "maturity_age_years": 3,
+      "spawning_season": [4, 5, 6, 7, 8, 9],
+      "migration_pattern": "highly_migratory",
+      "schooling_behavior": "forms_large_schools",
+      "feeding_habits": ["squid", "small_fish", "crustaceans"]
+    },
+    "fishing_characteristics": {
+      "primary_methods": ["longline", "pole_and_line", "trolling"],
+      "optimal_depth_range": [0, 250],
+      "best_fishing_times": ["dawn", "dusk"],
+      "moon_phase_preference": "new_moon",
+      "current_preference": "moderate_to_strong",
+      "temperature_tolerance": "warm_water_species",
+      "seasonal_movement": "follows_warm_currents"
+    },
+    "market_characteristics": {
+      "primary_uses": ["sashimi", "poke", "steaks", "canning"],
+      "shelf_life_days": 10,
+      "processing_yield_percent": 65,
+      "export_markets": ["Japan", "Mainland_US", "Europe"],
+      "local_demand": "very_high",
+      "tourist_demand": "high",
+      "restaurant_demand": "very_high"
+    },
+    "price_drivers": {
+      "quality_factors": ["color", "fat_content", "freshness", "handling"],
+      "size_premium": true,
+      "seasonal_premium": "winter_months",
+      "export_demand_influence": "very_high",
+      "local_events_impact": ["tournaments", "festivals"],
+      "weather_sensitivity": "high_storms_reduce_supply"
+    }
+  },
+  "bigeye_tuna": {
+    "common_names": ["Bigeye Tuna", "Bigeye", "Patudo"],
+    "scientific_name": "Thunnus obesus",
+    "base_price": 15.20,
+    "volatility": 0.18,
+    "optimal_sst_range": [18, 24],
+    "wind_sensitivity": 0.7,
+    "storm_impact": 0.85,
+    "size_categories": {
+      "small": {"weight_range": [30, 80], "price_modifier": 0.9},
+      "medium": {"weight_range": [80, 150], "price_modifier": 1.0},
+      "large": {"weight_range": [150, 250], "price_modifier": 1.2},
+      "extra_large": {"weight_range": [250, 450], "price_modifier": 1.4}
+    },
+    "grade_categories": {
+      "sashimi": {"price_modifier": 1.5, "quality_requirements": "highest"},
+      "premium": {"price_modifier": 1.25, "quality_requirements": "high"},
+      "standard": {"price_modifier": 1.0, "quality_requirements": "medium"},
+      "commercial": {"price_modifier": 0.85, "quality_requirements": "low"}
+    },
+    "biological_characteristics": {
+      "average_weight_lbs": 120,
+      "max_weight_lbs": 450,
+      "average_length_inches": 55,
+      "lifespan_years": 12,
+      "maturity_age_years": 4,
+      "spawning_season": [3, 4, 5, 6],
+      "migration_pattern": "highly_migratory",
+      "schooling_behavior": "forms_schools_with_yellowfin",
+      "feeding_habits": ["deep_water_squid", "lanternfish", "crustaceans"]
+    },
+    "fishing_characteristics": {
+      "primary_methods": ["longline", "deep_trolling"],
+      "optimal_depth_range": [150, 500],
+      "best_fishing_times": ["night", "deep_dawn"],
+      "moon_phase_preference": "full_moon",
+      "current_preference": "moderate",
+      "temperature_tolerance": "cooler_water_species",
+      "seasonal_movement": "follows_thermocline"
+    },
+    "market_characteristics": {
+      "primary_uses": ["sashimi", "sushi", "premium_steaks"],
+      "shelf_life_days": 12,
+      "processing_yield_percent": 68,
+      "export_markets": ["Japan", "High_end_US_restaurants"],
+      "local_demand": "high",
+      "tourist_demand": "medium",
+      "restaurant_demand": "very_high"
+    },
+    "price_drivers": {
+      "quality_factors": ["fat_marbling", "color", "texture", "size"],
+      "size_premium": true,
+      "seasonal_premium": "summer_scarcity",
+      "export_demand_influence": "extremely_high",
+      "local_events_impact": ["Japanese_holidays", "high_end_events"],
+      "weather_sensitivity": "moderate_storms_less_impact"
+    }
+  },
+  "mahi_mahi": {
+    "common_names": ["Mahi-mahi", "Dorado", "Dolphin Fish"],
+    "scientific_name": "Coryphaena hippurus",
+    "base_price": 8.75,
+    "volatility": 0.22,
+    "optimal_sst_range": [26, 30],
+    "wind_sensitivity": 0.9,
+    "storm_impact": 0.95,
+    "size_categories": {
+      "small": {"weight_range": [5, 15], "price_modifier": 0.8},
+      "medium": {"weight_range": [15, 30], "price_modifier": 1.0},
+      "large": {"weight_range": [30, 50], "price_modifier": 1.1},
+      "extra_large": {"weight_range": [50, 80], "price_modifier": 1.25}
+    },
+    "grade_categories": {
+      "premium": {"price_modifier": 1.3, "quality_requirements": "highest"},
+      "standard": {"price_modifier": 1.0, "quality_requirements": "medium"},
+      "commercial": {"price_modifier": 0.85, "quality_requirements": "low"}
+    },
+    "biological_characteristics": {
+      "average_weight_lbs": 25,
+      "max_weight_lbs": 80,
+      "average_length_inches": 36,
+      "lifespan_years": 5,
+      "maturity_age_years": 1,
+      "spawning_season": [4, 5, 6, 7, 8, 9, 10],
+      "migration_pattern": "seasonal_coastal",
+      "schooling_behavior": "small_groups_pairs",
+      "feeding_habits": ["flying_fish", "small_pelagics", "squid"]
+    },
+    "fishing_characteristics": {
+      "primary_methods": ["trolling", "pole_and_line", "small_longline"],
+      "optimal_depth_range": [0, 100],
+      "best_fishing_times": ["early_morning", "late_afternoon"],
+      "moon_phase_preference": "quarter_moon",
+      "current_preference": "edges_and_breaks",
+      "temperature_tolerance": "warm_surface_waters",
+      "seasonal_movement": "follows_baitfish"
+    },
+    "market_characteristics": {
+      "primary_uses": ["fresh_fillets", "restaurant_entrees", "local_plates"],
+      "shelf_life_days": 7,
+      "processing_yield_percent": 60,
+      "export_markets": ["Mainland_US", "Local_restaurants"],
+      "local_demand": "very_high",
+      "tourist_demand": "very_high",
+      "restaurant_demand": "extremely_high"
+    },
+    "price_drivers": {
+      "quality_factors": ["freshness", "size", "color", "texture"],
+      "size_premium": "moderate",
+      "seasonal_premium": "winter_months",
+      "export_demand_influence": "moderate",
+      "local_events_impact": ["tourist_season", "local_festivals"],
+      "weather_sensitivity": "extremely_high_storm_impact"
+    }
+  },
+  "opah": {
+    "common_names": ["Opah", "Moonfish", "King of Fish"],
+    "scientific_name": "Lampris guttatus",
+    "base_price": 18.50,
+    "volatility": 0.25,
+    "optimal_sst_range": [20, 26],
+    "wind_sensitivity": 0.6,
+    "storm_impact": 0.7,
+    "size_categories": {
+      "medium": {"weight_range": [60, 120], "price_modifier": 0.9},
+      "large": {"weight_range": [120, 200], "price_modifier": 1.0},
+      "extra_large": {"weight_range": [200, 300], "price_modifier": 1.2}
+    },
+    "grade_categories": {
+      "premium": {"price_modifier": 1.4, "quality_requirements": "highest"},
+      "standard": {"price_modifier": 1.0, "quality_requirements": "medium"},
+      "commercial": {"price_modifier": 0.9, "quality_requirements": "low"}
+    },
+    "biological_characteristics": {
+      "average_weight_lbs": 150,
+      "max_weight_lbs": 300,
+      "average_length_inches": 48,
+      "lifespan_years": 45,
+      "maturity_age_years": 8,
+      "spawning_season": [2, 3, 4],
+      "migration_pattern": "deep_water_vertical",
+      "schooling_behavior": "solitary_small_groups",
+      "feeding_habits": ["deep_squid", "krill", "small_fish"]
+    },
+    "fishing_characteristics": {
+      "primary_methods": ["deep_longline", "vertical_jigging"],
+      "optimal_depth_range": [200, 800],
+      "best_fishing_times": ["deep_night", "early_dawn"],
+      "moon_phase_preference": "new_moon",
+      "current_preference": "deep_currents",
+      "temperature_tolerance": "thermocline_species",
+      "seasonal_movement": "depth_migration"
+    },
+    "market_characteristics": {
+      "primary_uses": ["premium_restaurant", "specialty_cuts", "whole_fish"],
+      "shelf_life_days": 14,
+      "processing_yield_percent": 70,
+      "export_markets": ["High_end_US", "Japan", "Europe"],
+      "local_demand": "medium",
+      "tourist_demand": "low",
+      "restaurant_demand": "high_end_only"
+    },
+    "price_drivers": {
+      "quality_factors": ["fat_content", "size", "handling", "rarity"],
+      "size_premium": "high",
+      "seasonal_premium": "summer_scarcity",
+      "export_demand_influence": "high",
+      "local_events_impact": ["chef_events", "food_festivals"],
+      "weather_sensitivity": "low_storm_impact"
+    }
+  },
+  "marlin": {
+    "common_names": ["Blue Marlin", "Pacific Blue Marlin", "Kajiki"],
+    "scientific_name": "Makaira nigricans",
+    "base_price": 22.00,
+    "volatility": 0.3,
+    "optimal_sst_range": [25, 29],
+    "wind_sensitivity": 0.85,
+    "storm_impact": 0.9,
+    "size_categories": {
+      "medium": {"weight_range": [100, 200], "price_modifier": 0.8},
+      "large": {"weight_range": [200, 400], "price_modifier": 1.0},
+      "extra_large": {"weight_range": [400, 600], "price_modifier": 1.3},
+      "trophy": {"weight_range": [600, 1000], "price_modifier": 1.8}
+    },
+    "grade_categories": {
+      "trophy": {"price_modifier": 2.0, "quality_requirements": "tournament"},
+      "premium": {"price_modifier": 1.5, "quality_requirements": "highest"},
+      "standard": {"price_modifier": 1.0, "quality_requirements": "medium"},
+      "commercial": {"price_modifier": 0.9, "quality_requirements": "low"}
+    },
+    "biological_characteristics": {
+      "average_weight_lbs": 250,
+      "max_weight_lbs": 1000,
+      "average_length_inches": 84,
+      "lifespan_years": 20,
+      "maturity_age_years": 4,
+      "spawning_season": [5, 6, 7, 8, 9],
+      "migration_pattern": "oceanic_seasonal",
+      "schooling_behavior": "solitary_adult",
+      "feeding_habits": ["tuna", "mahi", "squid", "flying_fish"]
+    },
+    "fishing_characteristics": {
+      "primary_methods": ["trolling", "live_bait", "tournament_fishing"],
+      "optimal_depth_range": [0, 400],
+      "best_fishing_times": ["dawn", "dusk", "night"],
+      "moon_phase_preference": "full_moon",
+      "current_preference": "current_edges_upwelling",
+      "temperature_tolerance": "warm_blue_water",
+      "seasonal_movement": "follows_baitfish_aggregations"
+    },
+    "market_characteristics": {
+      "primary_uses": ["trophy_display", "premium_steaks", "sashimi", "smoked"],
+      "shelf_life_days": 10,
+      "processing_yield_percent": 55,
+      "export_markets": ["Japan_trophy", "US_premium"],
+      "local_demand": "low_high_end",
+      "tourist_demand": "trophy_only",
+      "restaurant_demand": "specialty_high_end"
+    },
+    "price_drivers": {
+      "quality_factors": ["size", "trophy_status", "freshness", "fat_content"],
+      "size_premium": "extremely_high",
+      "seasonal_premium": "winter_rarity",
+      "export_demand_influence": "very_high",
+      "local_events_impact": ["fishing_tournaments", "trophy_competitions"],
+      "weather_sensitivity": "high_storm_impact_but_less_frequent_catch"
+    }
+  },
+  "environmental_preferences": {
+    "water_temperature_ranges": {
+      "tropical_species": ["yellowfin_tuna", "mahi_mahi", "marlin"],
+      "temperate_species": ["bigeye_tuna", "opah"],
+      "temperature_sensitive": ["mahi_mahi", "yellowfin_tuna"],
+      "temperature_tolerant": ["opah", "bigeye_tuna"]
+    },
+    "depth_preferences": {
+      "surface_species": ["mahi_mahi", "marlin"],
+      "mid_water_species": ["yellowfin_tuna"],
+      "deep_water_species": ["bigeye_tuna", "opah"],
+      "vertical_migrators": ["opah", "bigeye_tuna"]
+    },
+    "current_associations": {
+      "current_dependent": ["mahi_mahi", "marlin"],
+      "current_following": ["yellowfin_tuna"],
+      "current_independent": ["opah", "bigeye_tuna"]
+    }
+  },
+  "fishing_gear_selectivity": {
+    "longline_primary": ["yellowfin_tuna", "bigeye_tuna", "opah"],
+    "trolling_primary": ["mahi_mahi", "marlin"],
+    "mixed_methods": ["yellowfin_tuna", "marlin"],
+    "specialized_gear": {
+      "deep_longline": ["bigeye_tuna", "opah"],
+      "surface_trolling": ["mahi_mahi", "marlin"],
+      "live_bait": ["yellowfin_tuna", "marlin"]
+    }
+  },
+  "market_competition": {
+    "high_export_competition": ["yellowfin_tuna", "bigeye_tuna", "marlin"],
+    "local_market_focused": ["mahi_mahi"],
+    "niche_premium_market": ["opah", "marlin"],
+    "volume_commercial": ["yellowfin_tuna"],
+    "seasonal_specialty": ["all_species"]
+  },
+  "conservation_status": {
+    "yellowfin_tuna": {"status": "near_threatened", "fishing_restrictions": "moderate"},
+    "bigeye_tuna": {"status": "vulnerable", "fishing_restrictions": "high"},
+    "mahi_mahi": {"status": "least_concern", "fishing_restrictions": "minimal"},
+    "opah": {"status": "least_concern", "fishing_restrictions": "minimal"},
+    "marlin": {"status": "vulnerable", "fishing_restrictions": "high"}
+  }
+}

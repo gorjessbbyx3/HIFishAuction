@@ -1,0 +1,247 @@
+{
+  "yellowfin_tuna": {
+    "peak_months": [6, 7, 8, 9],
+    "low_months": [12, 1, 2],
+    "price_multipliers": {
+      "1": 1.2,
+      "2": 1.15,
+      "3": 1.0,
+      "4": 0.95,
+      "5": 0.9,
+      "6": 0.85,
+      "7": 0.8,
+      "8": 0.82,
+      "9": 0.88,
+      "10": 1.0,
+      "11": 1.1,
+      "12": 1.25
+    },
+    "catch_multipliers": {
+      "1": 0.6,
+      "2": 0.7,
+      "3": 0.8,
+      "4": 0.9,
+      "5": 1.1,
+      "6": 1.4,
+      "7": 1.5,
+      "8": 1.4,
+      "9": 1.2,
+      "10": 1.0,
+      "11": 0.8,
+      "12": 0.6
+    },
+    "seasonal_notes": {
+      "peak_season": "Summer months (June-September) when yellowfin tuna follow warm water currents closer to Hawaiian waters. Peak catches typically occur during calm weather periods.",
+      "low_season": "Winter months (December-February) when cooler water temperatures drive yellowfin further offshore. Limited fishing due to rough weather conditions.",
+      "transition_periods": "Spring and fall show moderate activity with variable catch rates depending on ocean temperature patterns."
+    },
+    "optimal_conditions": {
+      "sst_range": [25, 28],
+      "moon_phase_preference": "new_moon",
+      "weather_sensitivity": "high"
+    }
+  },
+  "bigeye_tuna": {
+    "peak_months": [4, 5, 10, 11],
+    "low_months": [7, 8, 9],
+    "price_multipliers": {
+      "1": 1.1,
+      "2": 1.05,
+      "3": 1.0,
+      "4": 0.9,
+      "5": 0.85,
+      "6": 0.95,
+      "7": 1.15,
+      "8": 1.2,
+      "9": 1.1,
+      "10": 0.9,
+      "11": 0.88,
+      "12": 1.0
+    },
+    "catch_multipliers": {
+      "1": 0.9,
+      "2": 0.95,
+      "3": 1.0,
+      "4": 1.3,
+      "5": 1.4,
+      "6": 1.1,
+      "7": 0.7,
+      "8": 0.6,
+      "9": 0.8,
+      "10": 1.3,
+      "11": 1.4,
+      "12": 1.0
+    },
+    "seasonal_notes": {
+      "peak_season": "Spring (April-May) and fall (October-November) when bigeye tuna prefer the transitional water temperatures around Hawaii.",
+      "low_season": "Summer months (July-September) when water temperatures are too warm for bigeye tuna, causing them to move to deeper or more northerly waters.",
+      "transition_periods": "Winter months show steady but lower activity levels."
+    },
+    "optimal_conditions": {
+      "sst_range": [20, 24],
+      "moon_phase_preference": "full_moon",
+      "weather_sensitivity": "medium"
+    }
+  },
+  "mahi_mahi": {
+    "peak_months": [3, 4, 5, 9, 10],
+    "low_months": [12, 1, 6, 7],
+    "price_multipliers": {
+      "1": 1.3,
+      "2": 1.1,
+      "3": 0.85,
+      "4": 0.8,
+      "5": 0.82,
+      "6": 1.2,
+      "7": 1.25,
+      "8": 1.0,
+      "9": 0.9,
+      "10": 0.88,
+      "11": 1.05,
+      "12": 1.4
+    },
+    "catch_multipliers": {
+      "1": 0.5,
+      "2": 0.7,
+      "3": 1.4,
+      "4": 1.5,
+      "5": 1.4,
+      "6": 0.6,
+      "7": 0.5,
+      "8": 0.8,
+      "9": 1.3,
+      "10": 1.4,
+      "11": 1.0,
+      "12": 0.4
+    },
+    "seasonal_notes": {
+      "peak_season": "Spring (March-May) and early fall (September-October) when mahi-mahi follow schools of flying fish and other prey closer to shore.",
+      "low_season": "Winter (December-January) and mid-summer (June-July) when prey species are less abundant near Hawaiian waters.",
+      "transition_periods": "Late summer shows recovery as juvenile fish mature and feeding activity increases."
+    },
+    "optimal_conditions": {
+      "sst_range": [26, 30],
+      "moon_phase_preference": "quarter_moon",
+      "weather_sensitivity": "very_high"
+    }
+  },
+  "opah": {
+    "peak_months": [1, 2, 3, 11, 12],
+    "low_months": [6, 7, 8],
+    "price_multipliers": {
+      "1": 0.9,
+      "2": 0.85,
+      "3": 0.88,
+      "4": 1.0,
+      "5": 1.1,
+      "6": 1.3,
+      "7": 1.35,
+      "8": 1.25,
+      "9": 1.1,
+      "10": 1.0,
+      "11": 0.9,
+      "12": 0.85
+    },
+    "catch_multipliers": {
+      "1": 1.3,
+      "2": 1.4,
+      "3": 1.3,
+      "4": 1.1,
+      "5": 0.9,
+      "6": 0.6,
+      "7": 0.5,
+      "8": 0.6,
+      "9": 0.8,
+      "10": 1.0,
+      "11": 1.3,
+      "12": 1.4
+    },
+    "seasonal_notes": {
+      "peak_season": "Winter and early spring (January-March, November-December) when opah prefer cooler water temperatures around Hawaii.",
+      "low_season": "Summer months (June-August) when opah move to deeper or more northerly waters to find their preferred temperature range.",
+      "transition_periods": "Late spring and early fall show moderate catch rates as opah move through Hawaiian waters."
+    },
+    "optimal_conditions": {
+      "sst_range": [18, 24],
+      "moon_phase_preference": "new_moon",
+      "weather_sensitivity": "low"
+    }
+  },
+  "marlin": {
+    "peak_months": [6, 7, 8, 9],
+    "low_months": [12, 1, 2, 3],
+    "price_multipliers": {
+      "1": 1.4,
+      "2": 1.35,
+      "3": 1.3,
+      "4": 1.1,
+      "5": 0.95,
+      "6": 0.8,
+      "7": 0.75,
+      "8": 0.78,
+      "9": 0.85,
+      "10": 1.0,
+      "11": 1.2,
+      "12": 1.4
+    },
+    "catch_multipliers": {
+      "1": 0.4,
+      "2": 0.5,
+      "3": 0.6,
+      "4": 0.8,
+      "5": 1.0,
+      "6": 1.4,
+      "7": 1.5,
+      "8": 1.4,
+      "9": 1.2,
+      "10": 0.9,
+      "11": 0.6,
+      "12": 0.4
+    },
+    "seasonal_notes": {
+      "peak_season": "Summer months (June-September) when blue marlin are most active in warm Hawaiian waters. Peak tournament season with highest catch rates.",
+      "low_season": "Winter months (December-March) when marlin activity is minimal due to cooler water temperatures and rougher sea conditions.",
+      "transition_periods": "Spring shows increasing activity as waters warm, while fall sees declining activity as temperatures cool."
+    },
+    "optimal_conditions": {
+      "sst_range": [26, 29],
+      "moon_phase_preference": "full_moon",
+      "weather_sensitivity": "medium"
+    }
+  },
+  "seasonal_factors": {
+    "el_nino_years": {
+      "description": "El Niño conditions typically bring warmer water temperatures to Hawaii, extending the seasons for warm-water species like yellowfin tuna and marlin, while reducing catches of cooler-water species like bigeye tuna and opah.",
+      "species_impacts": {
+        "yellowfin_tuna": "extended_peak",
+        "bigeye_tuna": "reduced_catches",
+        "mahi_mahi": "variable",
+        "opah": "reduced_catches",
+        "marlin": "extended_peak"
+      }
+    },
+    "la_nina_years": {
+      "description": "La Niña conditions bring cooler water temperatures, favoring species like bigeye tuna and opah while reducing warm-water species catches.",
+      "species_impacts": {
+        "yellowfin_tuna": "reduced_peak",
+        "bigeye_tuna": "extended_peak",
+        "mahi_mahi": "reduced_catches",
+        "opah": "extended_peak",
+        "marlin": "reduced_peak"
+      }
+    },
+    "trade_wind_patterns": {
+      "description": "Strong trade winds affect fishing conditions and fish distribution. Consistent trades improve fishing for most species by creating upwelling and concentrating baitfish.",
+      "positive_impact": ["yellowfin_tuna", "mahi_mahi", "marlin"],
+      "negative_impact": [],
+      "neutral_impact": ["bigeye_tuna", "opah"]
+    },
+    "tropical_cyclone_season": {
+      "period": [6, 7, 8, 9, 10, 11],
+      "description": "Hurricane season (June-November) can significantly disrupt fishing patterns. Storms reduce fishing days but can also concentrate fish in certain areas post-storm.",
+      "pre_storm_effects": "increased_catches",
+      "post_storm_effects": "variable",
+      "species_most_affected": ["mahi_mahi", "marlin"]
+    }
+  }
+}

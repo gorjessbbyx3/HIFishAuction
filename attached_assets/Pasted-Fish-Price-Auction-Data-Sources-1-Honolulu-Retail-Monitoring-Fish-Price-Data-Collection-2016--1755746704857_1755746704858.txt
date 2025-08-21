@@ -1,0 +1,65 @@
+Fish Price & Auction Data Sources
+
+1. Honolulu Retail Monitoring Fish Price Data Collection (2016)
+	•	What it is: Weekly consumer-level fish price data from Honolulu retail markets, covering species, product form, origin, and preservation details. Available in CSV format.
+	•	Access via: NOAA’s InPort catalog or Data.gov export link.
+	•	Why useful: Great for modeling retail price trends and seasonal baselines.
+	•	￼ ￼
+
+2. UFA Auction Sampling Data (1984–2002)
+	•	What it is: Landing quantities and price-per-pound data from the United Fishing Agency (Honolulu Fish Auction), collected frequently (up to six times weekly).
+	•	Access via: NOAA’s InPort (requires contacting NOAA; may involve confidentiality constraints).
+	•	Why useful: Offers historical supply-side auction data to link volume with price.
+	•	￼
+
+3. WPacFIN Purchase Reports & Creel Surveys (WPacFIN, NOAA)
+	•	What it is: Vendor purchase reports (first-sales figures by fishermen) and catch-per-unit-effort (CPUE) data from creel surveys.
+	•	Access via: Pacific Islands Fisheries Science Center’s WPacFIN data collections (public summaries).
+	•	Why useful: Offers insights into supply patterns and fishing effort trends.
+	•	￼
+
+4. Pelagic Fisheries Market Analysis (2022)
+	•	What it is: NOAA Technical Memorandum summarizing pelagic fishery data: landings, exports/imports, volume/value breakdowns.
+	•	Access via: NOAA repository.
+	•	Why useful: Provides aggregated context and benchmarks for Hawaiʻi’s main commercial species.
+	•	￼
+
+⸻
+
+Weather & Storm Data Sources
+
+1. NOAA NWS API (weather.gov)
+	•	What it is: A free, programmatic API providing weather forecasts, observations, and, critically, warnings/alerts (e.g., storm watches).
+	•	Access via: https://api.weather.gov endpoints.
+	•	Why useful: To detect storm events and flag when fishing might be disrupted.
+	•	￼
+
+2. NCEI Storm Events Database
+	•	What it is: A database of historic storm and severe weather events across the U.S., including Hawaiʻi.
+	•	Access via: NOAA NCEI Storm Events page (bulk CSV download).
+	•	Why useful: To label past storm disruptions and identify patterns in auction price spikes.
+	•	￼
+
+3. Hawaiʻi Mesonet (University of Hawaiʻi)
+	•	What it is: A dense network (~100 stations statewide) offering real-time and archived data (every 15 minutes)—rainfall, wind, wave, etc.
+	•	Access via: Hawaiʻi Climate Data Portal or Mesonet API.
+	•	Why useful: Granular local weather inputs—including sudden storms at specific ports.
+	•	￼ ￼
+
+4. WFO Honolulu RSS Feeds
+	•	What it is: Real-time RSS/CAP feeds for Hawaiʻi-based weather alerts: severe weather, tropical cyclone warnings, marine advisories, surf reports, etc.
+	•	Access via: Honolulu Forecast Office feeds page.
+	•	Why useful: Quick detection of storm advisories to flag likely fishing disruptions.
+	•	￼
+
+5. JTWC (Joint Typhoon Warning Center)
+	•	What it is: U.S. military forecast center for tropical cyclones affecting the Central Pacific, including Hawaiʻi.
+	•	Access via: JTWC website (official warnings and advisories).
+	•	Why useful: For early-warning detection of hurricanes/tropical cyclones that may impact fishing activity.
+	•	￼
+
+⸻
+
+Additional Contextual Data
+	•	Pacific Disaster Center (PDC): Tools and data for situational awareness during major storm impacts in Hawaiʻi region.  ￼
+	•	Hurricane Storm Surge Models for Honolulu: Modeled storm surge inundation zones around Oʻahu as a category-4 scenario. Useful if you want geographic risk modeling.  ￼

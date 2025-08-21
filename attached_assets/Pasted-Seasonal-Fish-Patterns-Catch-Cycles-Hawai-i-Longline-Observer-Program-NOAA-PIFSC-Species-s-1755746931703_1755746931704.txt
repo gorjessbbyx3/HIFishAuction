@@ -1,0 +1,54 @@
+Seasonal Fish Patterns (Catch Cycles)
+	•	Hawai‘i Longline Observer Program (NOAA PIFSC)
+	•	Species-specific data on catch by month/season.
+	•	Link
+	•	Use this to build seasonal “expectation curves” (e.g., higher yellowfin in summer).
+	•	WPacFIN Catch Reports
+	•	Monthly catch and effort summaries by species.
+	•	WPacFIN Data Collections
+	•	Use this for seasonal trends → input feature for your ML model.
+
+⸻
+
+Food Sources & Ecosystem Indicators
+	•	Pacific Islands Ocean Ecosystem Indicators (NOAA PIFSC)
+	•	Tracks ecosystem health, prey biomass, and food web data for Hawai‘i fisheries.
+	•	Link
+	•	FishBase API
+	•	Global database of fish biology: diet, habitat, depth, spawning seasons.
+	•	FishBase with API access.
+	•	Useful for static knowledge like “Mahi feed on flying fish near surface” → combine with wind/wave data (which affect prey availability).
+
+⸻
+
+Water Temperature & Currents
+	•	NOAA Coral Reef Watch (Satellite SST)
+	•	Provides sea surface temperature (SST) and anomalies around Hawai‘i.
+	•	Coral Reef Watch
+	•	Tuna and mahi distribution is very sensitive to SST ranges.
+	•	OceanWatch (NOAA CoastWatch, Central Pacific Node)
+	•	Near-real-time satellite ocean data: SST, chlorophyll, altimetry (currents).
+	•	Link
+	•	Chlorophyll = food availability for baitfish → prey → target fish.
+	•	PacIOOS (Pacific Islands Ocean Observing System)
+	•	Localized forecasts of ocean currents, temperature, salinity, waves.
+	•	PacIOOS Data Portal
+	•	Perfect for mapping “where conditions are favorable for fish schools.”
+
+⸻
+
+How to Use These in the App
+	1.	Seasonality features
+	•	Encode species-specific seasonal cycles (e.g., June–Sept = peak ahi supply).
+	•	Input into ML as categorical/periodic features.
+	2.	Forage/Prey proxies
+	•	Use chlorophyll concentration (satellite data) as proxy for plankton → small pelagics → big fish.
+	•	Higher chlorophyll near Hawaii waters = higher probability of big fish landings.
+	3.	Ocean temperature ranges
+	•	Add sea surface temperature (SST) as a continuous feature.
+	•	E.g., ahi prefers ~24–28°C. Deviations affect catch rates.
+	4.	Storm disruption logic
+	•	Already discussed, but combined with prey availability → boats might not fish even when fish are abundant.
+	5.	Model pipeline
+	•	Features: {Season (month), SST, Chlorophyll, Storm Event, Wind Speed, Historical Catch Volume, Historical Auction Price}
+	•	Output: {Expected Auction Price (numeric or up/down flag)}
