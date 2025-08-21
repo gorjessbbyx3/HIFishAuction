@@ -11,6 +11,10 @@ from weather_service import WeatherService
 from ocean_service import OceanService
 from utils import format_currency, get_confidence_color, get_recommendation_icon
 from groq_service import GroqService
+from pacific_ecosystem_data import PacificEcosystemDataIntegration
+from global_market_analyzer import GlobalMarketAnalyzer
+from undercurrent_api_integration import UndercurrentAPIIntegration
+from noaa_longline_integration import NOAALonglineIntegration
 import time
 
 # Page configuration
@@ -29,13 +33,22 @@ def init_services():
     weather_service = WeatherService()
     ocean_service = OceanService()
     groq_service = GroqService()
-    return data_manager, prediction_model, weather_service, ocean_service, groq_service
+    
+    # Enhanced data integration services
+    ecosystem_data = PacificEcosystemDataIntegration()
+    global_analyzer = GlobalMarketAnalyzer()
+    undercurrent_api = UndercurrentAPIIntegration()
+    longline_data = NOAALonglineIntegration()
+    
+    return (data_manager, prediction_model, weather_service, ocean_service, 
+            groq_service, ecosystem_data, global_analyzer, undercurrent_api, longline_data)
 
 def main():
     st.title("🐟 Hawaii Fish Auction Price Predictor")
     st.markdown("### Strategic Prepayment Decision Support Tool")
     
-    data_manager, prediction_model, weather_service, ocean_service, groq_service = init_services()
+    (data_manager, prediction_model, weather_service, ocean_service, 
+     groq_service, ecosystem_data, global_analyzer, undercurrent_api, longline_data) = init_services()
     
     # Data status dashboard
     display_data_status_banner(data_manager, weather_service, ocean_service)
@@ -44,6 +57,10 @@ def main():
     historical_data = data_manager.get_historical_price_data()
     if historical_data is not None and not historical_data.empty:
         st.success(f"✅ System Active - {len(historical_data)} market records loaded")
+        
+        # Import comprehensive dashboard
+        from comprehensive_data_dashboard import display_comprehensive_data_status
+        display_comprehensive_data_status(ecosystem_data, global_analyzer, undercurrent_api, longline_data)
     else:
         st.error("❌ System requires data initialization")
     
