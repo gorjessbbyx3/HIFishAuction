@@ -551,13 +551,90 @@ def display_data_status_banner_detailed():
 
     st.info("💡 **For Auction Customers:** Green status means reliable predictions. Yellow/Red status means predictions are based on historical patterns and may be less accurate.")
 
+    # Weekly Price Calendar
+    st.markdown("### 📅 Weekly Price Outlook Calendar")
+    
+    # Create weekly calendar
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    current_date = datetime.now()
+    
+    # Generate price outlook for the week
+    cols = st.columns(7)
+    for i, day in enumerate(days):
+        with cols[i]:
+            date = current_date + timedelta(days=i)
+            
+            # Simulate price outlook (in real app, this would come from your model)
+            import random
+            random.seed(date.day + date.month)  # Consistent but varied results
+            price_outlook = random.choice(['📈 Higher', '📊 Normal', '📉 Lower'])
+            
+            # Color coding
+            if '📈' in price_outlook:
+                color = "#ff6b6b"  # Red for higher prices
+            elif '📉' in price_outlook:
+                color = "#51cf66"  # Green for lower prices  
+            else:
+                color = "#339af0"  # Blue for normal
+            
+            st.markdown(f"""
+            <div style="
+                background: {color}; 
+                color: white; 
+                padding: 10px; 
+                border-radius: 10px; 
+                text-align: center;
+                margin: 5px 0;
+                animation: pulse 2s infinite;
+            ">
+                <b>{day[:3]}</b><br>
+                {date.strftime('%m/%d')}<br>
+                {price_outlook}
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <style>
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     # Investment decision guidance
     st.markdown("""
     ### 💰 How to Use This Information for Smarter Purchases
 
     **🟢 All Green Status:** High confidence predictions - good for larger investments and strategic buying decisions.
 
-    **🟡 Mixed Status:** Moderate confidence - use predictions as guidance but rely more on your experience.
+    **🟡 Mixed Status:** Moderate confidence - consider smaller purchases or wait for better data.
+    
+    **🔴 Red Status:** Low confidence - predictions may be unreliable, proceed with caution.
+
+    ### ⚠️ Understanding High Risk Warnings
+
+    **When you see "High Risk" on a fish species prediction:**
+
+    **What it means:**
+    - Market volatility is high for this species
+    - Price swings of 20%+ are possible within days
+    - Limited recent data available for this species
+    - External factors (weather, regulations) may impact prices significantly
+
+    **Recommendations for High Risk Species:**
+    - **🎯 Buy smaller quantities** to limit exposure
+    - **⏰ Monitor daily** for sudden price changes
+    - **📊 Focus on species with "Low Risk" ratings** for larger purchases
+    - **💡 Consider waiting** 1-2 days if price trend is uncertain
+    - **🤝 Negotiate prices** more aggressively due to uncertainty
+    - **📱 Set price alerts** if available to catch favorable moments
+
+    **Smart Buying Strategy:**
+    - **High Risk + Price Drop Predicted:** Good opportunity for experienced buyers
+    - **High Risk + Price Rise Predicted:** Avoid or buy minimal quantities
+    - **Low Risk + Any Direction:** Safe for normal purchasing decisionsidence - use predictions as guidance but rely more on your experience.
 
     **🔴 Many Red Indicators:** Limited data available - stick to tried-and-true buying patterns until data improves.
     """)
