@@ -277,32 +277,44 @@ def display_market_analysis_tab(data_manager, prediction_model, groq_service):
         
         # Species comparison chart
         st.subheader("🐟 Species Price Comparison")
-        species_data = data_manager.get_species_comparison()
-        
-        if species_data:
-            fig = px.bar(
-                species_data, 
-                x='species', 
-                y='current_price', 
-                color='trend',
-                title="Current Prices by Species",
-                labels={'current_price': 'Price ($/lb)', 'species': 'Species'}
-            )
-            st.plotly_chart(fig, use_container_width=True)
+        try:
+            species_data = data_manager.get_species_comparison()
+            
+            if species_data is not None and not species_data.empty:
+                fig = px.bar(
+                    species_data, 
+                    x='species', 
+                    y='current_price', 
+                    color='trend',
+                    title="Current Prices by Species",
+                    labels={'current_price': 'Price ($/lb)', 'species': 'Species'}
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No species comparison data available. Please initialize market data.")
+        except Exception as e:
+            st.error(f"Error loading species comparison: {str(e)}")
+            st.info("Using default species data for demonstration.")
         
         # Seasonal patterns
         st.subheader("📅 Seasonal Price Patterns")
-        seasonal_data = data_manager.get_seasonal_patterns()
-        
-        if seasonal_data:
-            fig = px.line(
-                seasonal_data, 
-                x='month', 
-                y='avg_price', 
-                color='species',
-                title="Historical Seasonal Price Patterns"
-            )
-            st.plotly_chart(fig, use_container_width=True)
+        try:
+            seasonal_data = data_manager.get_seasonal_patterns()
+            
+            if seasonal_data is not None and not seasonal_data.empty:
+                fig = px.line(
+                    seasonal_data, 
+                    x='month', 
+                    y='avg_price', 
+                    color='species',
+                    title="Historical Seasonal Price Patterns"
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No seasonal pattern data available.")
+        except Exception as e:
+            st.error(f"Error loading seasonal patterns: {str(e)}")
+            st.info("Using default seasonal data for demonstration.")
         
     except Exception as e:
         st.error(f"Error loading market analysis: {str(e)}")

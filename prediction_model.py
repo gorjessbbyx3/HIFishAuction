@@ -474,13 +474,19 @@ class PredictionModel:
             y_price = base_price + price_effects
             y_price = np.clip(y_price, 5.0, 30.0)  # Realistic price range
             
-            # Generate direction labels
-            price_changes = np.diff(np.concatenate([[base_price], y_price]))
+            # Generate direction labels based on price changes
+            price_changes = np.diff(y_price)
             y_direction = ['increase' if change > 0.5 else 'decrease' if change < -0.5 else 'stable' 
                           for change in price_changes]
             
+            # Ensure all arrays have the same length
+            min_length = min(len(X), len(y_price), len(y_direction))
+            X = X.iloc[:min_length]
+            y_price = y_price[:min_length]
+            y_direction = y_direction[:min_length]
+            
             print(f"Created synthetic dataset with {len(X)} samples")
-            return X, pd.Series(y_price[:-1]), pd.Series(y_direction)
+            return X, pd.Series(y_price), pd.Series(y_direction)
             
         except Exception as e:
             print(f"Error creating synthetic data: {str(e)}")
@@ -585,6 +591,12 @@ class PredictionModel:
             weather_forecast = weather_service.get_forecast(prediction_days)
             ocean_forecast = ocean_service.get_ocean_forecast(prediction_days)
             
+            # Handle None forecasts
+            if weather_forecast is None:
+                weather_forecast = []
+            if ocean_forecast is None:
+                ocean_forecast = []
+            
             for i in range(prediction_days):
                 target_date = (datetime.now() + timedelta(days=i+1)).strftime('%Y-%m-%d')
                 
@@ -598,6 +610,12 @@ class PredictionModel:
                     ocean_data = ocean_forecast[i]
                 else:
                     ocean_data = ocean_service.get_current_ocean_conditions()
+                
+                # Ensure weather_data and ocean_data are not None
+                if weather_data is None:
+                    weather_data = {'wind_speed': 12.0, 'wave_height': 3.5, 'storm_warnings': [], 'temperature': 26.5}
+                if ocean_data is None:
+                    ocean_data = {'sea_surface_temp': 26.5, 'chlorophyll': 0.15, 'current_strength': 'Moderate'}
                 
                 # Make prediction
                 prediction = self.predict_price_direction(weather_data, ocean_data, internal_species, target_date)

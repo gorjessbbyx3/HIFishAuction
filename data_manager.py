@@ -363,25 +363,40 @@ class DataManager:
             'storm_risk': storm_risk
         }
     
-    def get_species_comparison(self) -> Optional[pd.DataFrame]:
+    def get_species_comparison(self) -> pd.DataFrame:
         """Get species price comparison data"""
-        conn = sqlite3.connect(self.db_path)
-        
-        species_df = pd.read_sql_query('''
-            SELECT 
-                species,
-                AVG(price_per_lb) as current_price,
-                'stable' as trend
-            FROM market_data 
-            WHERE date >= date('now', '-3 days')
-            GROUP BY species
-            HAVING COUNT(*) > 0
-        ''', conn)
-        
-        conn.close()
-        
-        if species_df.empty:
-            # Return default data for demonstration
+        try:
+            conn = sqlite3.connect(self.db_path)
+            
+            species_df = pd.read_sql_query('''
+                SELECT 
+                    species,
+                    AVG(price_per_lb) as current_price,
+                    'stable' as trend
+                FROM market_data 
+                WHERE date >= date('now', '-3 days')
+                GROUP BY species
+                HAVING COUNT(*) > 0
+            ''', conn)
+            
+            conn.close()
+            
+            if species_df.empty:
+                # Return default data for demonstration
+                default_data = []
+                for species, data in self.species_data.items():
+                    default_data.append({
+                        'species': species.replace('_', ' ').title(),
+                        'current_price': data['base_price'],
+                        'trend': 'stable'
+                    })
+                return pd.DataFrame(default_data)
+            
+            return species_df
+            
+        except Exception as e:
+            print(f"Error in get_species_comparison: {str(e)}")
+            # Return default data as fallback
             default_data = []
             for species, data in self.species_data.items():
                 default_data.append({
@@ -390,23 +405,38 @@ class DataManager:
                     'trend': 'stable'
                 })
             return pd.DataFrame(default_data)
-        
-        return species_df
     
-    def get_seasonal_patterns(self) -> Optional[pd.DataFrame]:
+    def get_seasonal_patterns(self) -> pd.DataFrame:
         """Get seasonal price patterns data"""
-        seasonal_data = []
-        
-        for species, pattern in self.seasonal_patterns.items():
-            for month, multiplier in pattern['price_multipliers'].items():
-                base_price = self.species_data.get(species, {}).get('base_price', 12.50)
-                seasonal_data.append({
-                    'species': species.replace('_', ' ').title(),
-                    'month': month,
-                    'avg_price': base_price * multiplier
-                })
-        
-        return pd.DataFrame(seasonal_data)
+        try:
+            seasonal_data = []
+            
+            for species, pattern in self.seasonal_patterns.items():
+                if 'price_multipliers' in pattern:
+                    for month, multiplier in pattern['price_multipliers'].items():
+                        base_price = self.species_data.get(species, {}).get('base_price', 12.50)
+                        seasonal_data.append({
+                            'species': species.replace('_', ' ').title(),
+                            'month': month,
+                            'avg_price': base_price * multiplier
+                        })
+            
+            if not seasonal_data:
+                # Create minimal default data if none exists
+                seasonal_data = [
+                    {'species': 'Yellowfin Tuna', 'month': 1, 'avg_price': 12.50},
+                    {'species': 'Bigeye Tuna', 'month': 1, 'avg_price': 15.75}
+                ]
+            
+            return pd.DataFrame(seasonal_data)
+            
+        except Exception as e:
+            print(f"Error in get_seasonal_patterns: {str(e)}")
+            # Return minimal fallback data
+            return pd.DataFrame([
+                {'species': 'Yellowfin Tuna', 'month': 1, 'avg_price': 12.50},
+                {'species': 'Bigeye Tuna', 'month': 1, 'avg_price': 15.75}
+            ])
     
     def get_model_performance(self) -> Dict:
         """Get model performance metrics"""
