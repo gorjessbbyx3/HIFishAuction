@@ -427,27 +427,10 @@ class DataManager:
         conn.close()
         
         if historical_df.empty:
-            # Generate sample historical data
-            dates = pd.date_range(start='2025-05-21', end='2025-08-21', freq='D')
-            historical_data = []
-            
-            for species, data in self.species_data.items():
-                base_price = data['base_price']
-                volatility = data['volatility']
-                
-                for date in dates:
-                    # Add some random variation
-                    import random
-                    price_variation = random.uniform(-volatility, volatility)
-                    price = base_price * (1 + price_variation)
-                    
-                    historical_data.append({
-                        'date': date.strftime('%Y-%m-%d'),
-                        'species': species.replace('_', ' ').title(),
-                        'price': price
-                    })
-            
-            return pd.DataFrame(historical_data)
+            # No synthetic data - return empty to indicate real data needed
+            print("No historical auction data found in database")
+            print("Please integrate with Honolulu Fish Auction data sources")
+            return pd.DataFrame()
         
         return historical_df
     
@@ -469,23 +452,9 @@ class DataManager:
         conn.close()
         
         if results_df.empty:
-            # Generate sample comparison data
-            dates = pd.date_range(start='2025-07-01', end='2025-08-21', freq='3D')
-            comparison_data = []
-            
-            for date in dates:
-                import random
-                base_price = 12.50
-                predicted_price = base_price * (1 + random.uniform(-0.1, 0.1))
-                actual_price = base_price * (1 + random.uniform(-0.12, 0.12))
-                
-                comparison_data.append({
-                    'date': date.strftime('%Y-%m-%d'),
-                    'predicted_price': predicted_price,
-                    'actual_price': actual_price
-                })
-            
-            return pd.DataFrame(comparison_data)
+            # No synthetic data - return empty to indicate real data needed
+            print("No prediction comparison data available")
+            return pd.DataFrame()
         
         return results_df
     

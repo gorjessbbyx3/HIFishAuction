@@ -156,113 +156,50 @@ class PredictionModel:
         
         return min(disruption, 1.0)
     
-    def generate_synthetic_training_data(self, n_samples: int = 1000) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
-        """Generate synthetic training data for initial model training"""
-        np.random.seed(42)
+    def load_historical_auction_data(self) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
+        """Load historical auction data from available sources"""
+        try:
+            # Try to load from database first
+            from data_manager import DataManager
+            data_manager = DataManager()
+            
+            historical_data = data_manager.get_historical_price_data()
+            if historical_data is not None and not historical_data.empty:
+                print("Using existing historical data for training")
+                return self._prepare_historical_data_for_training(historical_data)
+            
+            # If no historical data, return minimal training set
+            print("No historical auction data available. Model training requires real data.")
+            print("Please provide historical fish auction data or API access.")
+            return pd.DataFrame(), pd.Series(), pd.Series()
+            
+        except Exception as e:
+            print(f"Error loading historical data: {str(e)}")
+            return pd.DataFrame(), pd.Series(), pd.Series()
+    
+    def _prepare_historical_data_for_training(self, historical_data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
+        """Prepare historical data for model training"""
+        if len(historical_data) < 10:
+            print("Insufficient historical data for training")
+            return pd.DataFrame(), pd.Series(), pd.Series()
         
-        data = []
-        prices = []
-        directions = []
-        
-        from data_manager import DataManager
-        data_manager = DataManager()
-        
-        species_list = list(data_manager.species_data.keys())
-        
-        for _ in range(n_samples):
-            # Random date within last 2 years
-            start_date = datetime.now() - timedelta(days=730)
-            random_date = start_date + timedelta(days=np.random.randint(0, 730))
-            
-            # Random species
-            species = np.random.choice(species_list)
-            species_data = data_manager.species_data[species]
-            
-            # Generate weather conditions
-            wind_speed = np.random.gamma(2, 6)  # Realistic wind speed distribution
-            wave_height = np.random.exponential(3.5)
-            storm_warnings = np.random.poisson(0.1)  # Low probability of storms
-            temperature = np.random.normal(26.5, 2.0)
-            
-            # Generate ocean conditions
-            month = random_date.month
-            seasonal_sst = 26.5 + 2 * np.sin(2 * np.pi * (month - 1) / 12)
-            sst = np.random.normal(seasonal_sst, 1.0)
-            chlorophyll = np.random.lognormal(-2, 0.5)  # Log-normal distribution
-            current_strength = np.random.choice(['Weak', 'Moderate', 'Strong'], p=[0.3, 0.5, 0.2])
-            upwelling_index = np.random.beta(2, 3)
-            
-            # Create weather and ocean data dicts
-            weather_data = {
-                'wind_speed': wind_speed,
-                'wave_height': wave_height,
-                'storm_warnings': ['Storm Warning'] * int(storm_warnings),
-                'temperature': temperature
-            }
-            
-            ocean_data = {
-                'sea_surface_temp': sst,
-                'chlorophyll': chlorophyll,
-                'current_strength': current_strength,
-                'upwelling_index': upwelling_index
-            }
-            
-            # Create features
-            features = self.create_features(weather_data, ocean_data, species, random_date.strftime('%Y-%m-%d'))
-            data.append(features.flatten())
-            
-            # Generate realistic price based on features
-            base_price = species_data['base_price']
-            volatility = species_data['volatility']
-            
-            # Price influenced by conditions
-            price_factor = 1.0
-            
-            # Storm impact on price
-            if storm_warnings > 0:
-                price_factor *= (1 + 0.15 * storm_warnings)  # Storms increase prices
-            
-            # Wind impact
-            if wind_speed > 20:
-                price_factor *= (1 + 0.1 * ((wind_speed - 20) / 10))
-            
-            # Seasonal effect
-            seasonal_patterns = data_manager.seasonal_patterns.get(species, {})
-            seasonal_multiplier = seasonal_patterns.get('price_multipliers', {}).get(month, 1.0)
-            price_factor *= seasonal_multiplier
-            
-            # Temperature effect
-            optimal_sst_range = species_data.get('optimal_sst_range', [24, 28])
-            if not (optimal_sst_range[0] <= sst <= optimal_sst_range[1]):
-                price_factor *= 1.05  # Suboptimal conditions increase prices
-            
-            # Add random noise
-            noise = np.random.normal(1, volatility)
-            
-            final_price = base_price * price_factor * noise
-            prices.append(max(final_price, base_price * 0.5))  # Minimum price floor
-            
-            # Determine price direction
-            if price_factor > 1.1:
-                directions.append('increase')
-            elif price_factor < 0.9:
-                directions.append('decrease')
-            else:
-                directions.append('stable')
-        
-        X = pd.DataFrame(data)
-        y_price = pd.Series(prices)
-        y_direction = pd.Series(directions)
-        
-        return X, y_price, y_direction
+        # This would process real auction data with environmental conditions
+        # For now, return empty until real data is provided
+        print("Historical data processing requires real environmental correlation data")
+        return pd.DataFrame(), pd.Series(), pd.Series()
     
     def train_initial_model(self):
-        """Train initial model with synthetic data"""
+        """Train initial model with available data"""
         try:
-            print("Training initial prediction model with synthetic data...")
+            print("Loading historical auction data for model training...")
             
-            # Generate synthetic training data
-            X, y_price, y_direction = self.generate_synthetic_training_data(1000)
+            # Load real historical data
+            X, y_price, y_direction = self.load_historical_auction_data()
+            
+            if X.empty:
+                print("No training data available. Model cannot be trained without historical auction data.")
+                self.is_trained = False
+                return
             
             # Define feature columns
             self.feature_columns = [
@@ -471,23 +408,22 @@ class PredictionModel:
         return factors[:5]  # Return top 5 factors
     
     def _get_fallback_prediction(self) -> Dict:
-        """Return fallback prediction when model fails"""
+        """Return message indicating need for real data"""
         return {
             'species': 'unknown',
             'target_date': datetime.now().strftime('%Y-%m-%d'),
-            'predicted_price': 12.50,
-            'current_base_price': 12.50,
-            'direction': 'stable',
+            'predicted_price': 0.0,
+            'current_base_price': 0.0,
+            'direction': 'insufficient_data',
             'price_change_percent': 0.0,
-            'confidence': 0.5,
-            'direction_probabilities': {
-                'decrease': 0.3,
-                'increase': 0.3,
-                'stable': 0.4
-            },
-            'key_factors': [],
-            'volatility': 0.15,
-            'volatility_score': 0.3
+            'confidence': 0.0,
+            'direction_probabilities': {'insufficient_data': 1.0},
+            'key_factors': [
+                {'name': 'Data Required', 'description': 'Historical auction data needed for predictions', 'impact': 0}
+            ],
+            'volatility': 0.0,
+            'volatility_score': 0.0,
+            'error_message': 'Model requires real historical auction data to make predictions'
         }
     
     def get_predictions(self, selected_species: str, prediction_days: int) -> List[Dict]:
