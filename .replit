@@ -23,6 +23,7 @@ args = "Hawaii Fish Auction App"
 [[workflows.workflow]]
 name = "Hawaii Fish Auction App"
 author = "agent"
+mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
