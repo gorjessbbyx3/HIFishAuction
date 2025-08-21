@@ -462,7 +462,7 @@ class HistoricalDataFinder:
             "   - Contains actual retail price monitoring data",
             "   - Requires manual navigation and download",
             ""
-        ]
+        ])
         
         # Data integration steps
         report.extend([
