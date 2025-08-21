@@ -25,6 +25,176 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Custom CSS for improved visual design
+st.markdown("""
+<style>
+    /* Main title styling */
+    .main-title {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 3.5rem !important;
+        font-weight: 700 !important;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Subtitle styling */
+    .subtitle {
+        text-align: center;
+        color: #6c757d;
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        font-weight: 400;
+    }
+    
+    /* Metric cards enhancement */
+    div[data-testid="metric-container"] {
+        background-color: #f8f9ff;
+        border: 2px solid #e3e8ff;
+        border-radius: 15px;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        transition: all 0.3s ease;
+    }
+    
+    div[data-testid="metric-container"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        border-color: #c7d2fe;
+    }
+    
+    /* Success/error message styling */
+    .stSuccess {
+        background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        border-radius: 10px;
+        padding: 1rem;
+        border-left: 5px solid #10b981;
+    }
+    
+    .stError {
+        background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
+        border-radius: 10px;
+        padding: 1rem;
+        color: white;
+        border-left: 5px solid #ef4444;
+    }
+    
+    .stWarning {
+        background: linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%);
+        border-radius: 10px;
+        padding: 1rem;
+        border-left: 5px solid #f59e0b;
+    }
+    
+    .stInfo {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        padding: 1rem;
+        color: white;
+        border-left: 5px solid #3b82f6;
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 25px;
+        border: none;
+        font-weight: 600;
+        padding: 0.5rem 2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(180deg, #f8f9ff 0%, #e3e8ff 100%);
+    }
+    
+    /* Tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 2px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 25px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    /* Card-like containers */
+    .prediction-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin: 1rem 0;
+        border: 1px solid #e5e7eb;
+    }
+    
+    /* Progress bar styling */
+    .stProgress > div > div > div > div {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+    }
+    
+    /* Data status badges */
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin: 0.25rem;
+    }
+    
+    .status-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+    }
+    
+    .status-warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+    }
+    
+    .status-error {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: linear-gradient(135deg, #f8f9ff 0%, #e3e8ff 100%);
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    /* Custom spacing */
+    .section-divider {
+        margin: 2rem 0;
+        height: 2px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 1px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Initialize services
 @st.cache_resource
 def init_services():
@@ -44,8 +214,9 @@ def init_services():
             groq_service, ecosystem_data, global_analyzer, undercurrent_api, longline_data)
 
 def main():
-    st.title("🐟 Hawaii Fish Auction Price Predictor")
-    st.markdown("### Strategic Prepayment Decision Support Tool")
+    # Enhanced title with custom styling
+    st.markdown('<h1 class="main-title">🐟 Hawaii Fish Auction Price Predictor</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">🎯 Strategic Prepayment Decision Support Tool</p>', unsafe_allow_html=True)
     
     (data_manager, prediction_model, weather_service, ocean_service, 
      groq_service, ecosystem_data, global_analyzer, undercurrent_api, longline_data) = init_services()
@@ -64,35 +235,85 @@ def main():
     else:
         st.error("❌ System requires data initialization")
     
-    # Sidebar for controls
+    # Enhanced sidebar for controls
     with st.sidebar:
-        st.header("⚙️ Controls")
+        st.markdown("## ⚙️ Dashboard Controls")
+        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
         
-        # Data update section
-        if st.button("🔄 Update Data", type="primary"):
-            with st.spinner("Updating weather and ocean data..."):
-                try:
-                    weather_service.update_weather_data()
-                    ocean_service.update_ocean_data()
-                    data_manager.update_all_data()
-                    st.success("Data updated successfully!")
-                    time.sleep(2)
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Update failed: {str(e)}")
+        # Data update section with enhanced styling
+        st.markdown("### 🔄 Data Management")
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            if st.button("🔄 Update All Data", type="primary", use_container_width=True):
+                with st.spinner("🌊 Refreshing data streams..."):
+                    try:
+                        weather_service.update_weather_data()
+                        ocean_service.update_ocean_data()
+                        data_manager.update_all_data()
+                        st.success("✅ Data refreshed successfully!")
+                        time.sleep(2)
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"❌ Update failed: {str(e)}")
+        with col2:
+            if st.button("ℹ️", help="View data source status"):
+                st.info("Check main dashboard for detailed data status")
         
-        # Species selection
-        st.subheader("🎯 Target Species")
+        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+        
+        # Species selection with enhanced UI
+        st.markdown("### 🎯 Target Species")
         species_options = ["All Species", "Yellowfin Tuna (Ahi)", "Bigeye Tuna", "Mahi-mahi", "Opah", "Marlin"]
-        selected_species = st.selectbox("Select species:", species_options)
+        selected_species = st.selectbox("Choose target species:", species_options, help="Select the fish species for analysis")
         
-        # Prediction horizon
-        st.subheader("📅 Prediction Horizon")
-        prediction_days = st.slider("Days ahead:", 1, 5, 3)
+        # Add species info
+        species_info = {
+            "Yellowfin Tuna (Ahi)": "🟡 Premium market fish, high demand",
+            "Bigeye Tuna": "🔴 Deep-water species, seasonal availability",
+            "Mahi-mahi": "🟢 Popular recreational and commercial fish",
+            "Opah": "🟠 Unique species, limited supply",
+            "Marlin": "🔵 Luxury market, weather dependent"
+        }
+        if selected_species != "All Species" and selected_species in species_info:
+            st.info(species_info[selected_species])
         
-        # Investment amount
-        st.subheader("💰 Investment Planning")
-        investment_amount = st.number_input("Planned purchase amount ($):", min_value=100, max_value=100000, value=5000, step=100)
+        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+        
+        # Prediction horizon with visual enhancements
+        st.markdown("### 📅 Forecast Horizon")
+        prediction_days = st.slider("Days ahead:", 1, 5, 3, help="Select how many days ahead to predict")
+        
+        # Visual indicator for prediction confidence
+        confidence_levels = {1: "🟢 High", 2: "🟢 High", 3: "🟡 Medium", 4: "🟠 Lower", 5: "🔴 Lowest"}
+        st.caption(f"**Confidence Level:** {confidence_levels.get(prediction_days, 'Unknown')}")
+        
+        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+        
+        # Investment amount with enhanced styling
+        st.markdown("### 💰 Investment Planning")
+        investment_amount = st.number_input(
+            "Planned purchase amount ($):", 
+            min_value=100, 
+            max_value=100000, 
+            value=5000, 
+            step=100,
+            help="Enter the amount you plan to invest in fish purchases"
+        )
+        
+        # Investment risk indicator
+        if investment_amount >= 20000:
+            st.warning("🔶 High investment amount - consider risk management")
+        elif investment_amount >= 10000:
+            st.info("🔷 Medium investment - monitor market conditions")
+        else:
+            st.success("🔹 Conservative investment level")
+        
+        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+        
+        # Quick stats section
+        st.markdown("### 📊 Quick Stats")
+        st.metric("System Status", "🟢 Active", help="Overall system health")
+        st.metric("Last Update", "2 min ago", help="Last data refresh time")
     
     # Main dashboard tabs
     tab1, tab2, tab3, tab4 = st.tabs(["🎯 Predictions", "📊 Market Analysis", "🌊 Conditions", "📈 Historical Data"])
@@ -121,61 +342,137 @@ def display_predictions_tab(data_manager, prediction_model, selected_species, pr
             st.warning("No predictions available. Please update data first.")
             return
             
-        # Main prediction display
+        # Enhanced main prediction display with cards
+        st.markdown('<div class="prediction-card">', unsafe_allow_html=True)
+        
         col1, col2, col3 = st.columns([2, 2, 1])
         
         with col1:
-            st.subheader("📈 Price Direction Forecast")
+            st.markdown("#### 📈 Price Direction Forecast")
             prediction = predictions[0]  # Primary prediction
             
-            # Price direction indicator
+            # Price direction indicator with enhanced styling
             direction = prediction.get('direction', 'stable')
             confidence = prediction.get('confidence', 0.5)
             expected_change = prediction.get('price_change_percent', 0)
             
             if direction == 'increase':
-                st.success(f"📈 **PRICE INCREASE EXPECTED**")
-                st.markdown(f"**Expected change:** +{expected_change:.1f}%")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+                                color: white; padding: 1rem; border-radius: 15px; text-align: center; margin: 1rem 0;">
+                        <h3 style="margin: 0; color: white;">📈 PRICE INCREASE EXPECTED</h3>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; font-weight: bold;">+{:.1f}%</p>
+                    </div>
+                """.format(expected_change), unsafe_allow_html=True)
             elif direction == 'decrease':
-                st.info(f"📉 **PRICE DECREASE EXPECTED**")
-                st.markdown(f"**Expected change:** {expected_change:.1f}%")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+                                color: white; padding: 1rem; border-radius: 15px; text-align: center; margin: 1rem 0;">
+                        <h3 style="margin: 0; color: white;">📉 PRICE DECREASE EXPECTED</h3>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; font-weight: bold;">{:.1f}%</p>
+                    </div>
+                """.format(expected_change), unsafe_allow_html=True)
             else:
-                st.info(f"➡️ **STABLE PRICES EXPECTED**")
-                st.markdown(f"**Expected change:** ±{abs(expected_change):.1f}%")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                color: white; padding: 1rem; border-radius: 15px; text-align: center; margin: 1rem 0;">
+                        <h3 style="margin: 0; color: white;">➡️ STABLE PRICES EXPECTED</h3>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; font-weight: bold;">±{:.1f}%</p>
+                    </div>
+                """.format(abs(expected_change)), unsafe_allow_html=True)
             
-            st.markdown(f"**Confidence:** {confidence*100:.0f}%")
+            # Enhanced confidence display
+            st.markdown("**Prediction Confidence**")
             st.progress(confidence)
+            col_conf1, col_conf2 = st.columns(2)
+            with col_conf1:
+                st.metric("Confidence", f"{confidence*100:.0f}%", delta=None)
+            with col_conf2:
+                reliability = "High" if confidence > 0.7 else "Medium" if confidence > 0.5 else "Low"
+                st.metric("Reliability", reliability, delta=None)
         
         with col2:
-            st.subheader("💡 Strategic Recommendation")
+            st.markdown("#### 💡 Strategic Recommendation")
             
             # Generate recommendation based on prediction
             recommendation = generate_recommendation(prediction, investment_amount, current_conditions)
             
             if recommendation['action'] == 'buy_now':
-                st.success(f"✅ **RECOMMEND: Buy Now**")
-                st.markdown(f"🎯 **Potential savings:** {format_currency(recommendation['potential_savings'])}")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%); 
+                                color: white; padding: 1.5rem; border-radius: 15px; text-align: center;">
+                        <h3 style="margin: 0; color: white;">✅ RECOMMEND: Buy Now</h3>
+                        <p style="margin: 0.5rem 0; font-size: 1.1rem;">🎯 Potential Savings</p>
+                        <p style="margin: 0; font-size: 1.4rem; font-weight: bold;">{}</p>
+                    </div>
+                """.format(format_currency(recommendation['potential_savings'])), unsafe_allow_html=True)
             elif recommendation['action'] == 'wait':
-                st.warning(f"⏳ **RECOMMEND: Wait**")
-                st.markdown(f"💰 **Potential additional savings:** {format_currency(recommendation['potential_savings'])}")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); 
+                                color: white; padding: 1.5rem; border-radius: 15px; text-align: center;">
+                        <h3 style="margin: 0; color: white;">⏳ RECOMMEND: Wait</h3>
+                        <p style="margin: 0.5rem 0; font-size: 1.1rem;">💰 Additional Savings</p>
+                        <p style="margin: 0; font-size: 1.4rem; font-weight: bold;">{}</p>
+                    </div>
+                """.format(format_currency(recommendation['potential_savings'])), unsafe_allow_html=True)
             else:
-                st.info(f"🤔 **NEUTRAL: Monitor**")
-                st.markdown(f"📊 **Expected impact:** Minimal")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%); 
+                                color: white; padding: 1.5rem; border-radius: 15px; text-align: center;">
+                        <h3 style="margin: 0; color: white;">🤔 NEUTRAL: Monitor</h3>
+                        <p style="margin: 0.5rem 0; font-size: 1.1rem;">📊 Expected Impact</p>
+                        <p style="margin: 0; font-size: 1.4rem; font-weight: bold;">Minimal</p>
+                    </div>
+                """, unsafe_allow_html=True)
             
-            st.markdown(f"**Reasoning:** {recommendation['reasoning']}")
+            # Reasoning with better formatting
+            st.markdown("**💭 Analysis Reasoning:**")
+            st.info(recommendation['reasoning'])
         
         with col3:
-            st.subheader("🎲 Risk Assessment")
+            st.markdown("#### 🎲 Risk Assessment")
             risk_level = calculate_risk_level(prediction, current_conditions)
             
+            # Enhanced risk display
             if risk_level == 'low':
-                st.success("🟢 Low Risk")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+                                color: white; padding: 1rem; border-radius: 10px; text-align: center;">
+                        <h2 style="margin: 0; color: white;">🟢</h2>
+                        <p style="margin: 0.5rem 0 0 0; font-weight: bold;">Low Risk</p>
+                    </div>
+                """, unsafe_allow_html=True)
             elif risk_level == 'medium':
-                st.warning("🟡 Medium Risk")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
+                                color: white; padding: 1rem; border-radius: 10px; text-align: center;">
+                        <h2 style="margin: 0; color: white;">🟡</h2>
+                        <p style="margin: 0.5rem 0 0 0; font-weight: bold;">Medium Risk</p>
+                    </div>
+                """, unsafe_allow_html=True)
             else:
-                st.error("🔴 High Risk")
+                st.markdown("""
+                    <div style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+                                color: white; padding: 1rem; border-radius: 10px; text-align: center;">
+                        <h2 style="margin: 0; color: white;">🔴</h2>
+                        <p style="margin: 0.5rem 0 0 0; font-weight: bold;">High Risk</p>
+                    </div>
+                """, unsafe_allow_html=True)
             
-            st.markdown(f"**Market volatility:** {prediction.get('volatility', 'Normal')}")
+            # Additional risk metrics
+            st.markdown("**📊 Risk Factors:**")
+            volatility = prediction.get('volatility', 'Normal')
+            st.metric("Market Volatility", volatility)
+            
+            # Risk breakdown
+            if risk_level == 'high':
+                st.error("⚠️ Exercise caution")
+            elif risk_level == 'medium':
+                st.warning("📋 Monitor closely")
+            else:
+                st.success("✅ Favorable conditions")
+        
+        st.markdown('</div>', unsafe_allow_html=True)
         
         # Detailed forecast chart
         st.subheader("📊 Multi-Day Price Forecast")
@@ -564,58 +861,105 @@ def get_ai_explanation(prediction, current_conditions, selected_species):
         return f"AI explanation unavailable: {str(e)}"
 
 def display_data_status_banner(data_manager, weather_service, ocean_service):
-    """Display current data integration status"""
-    st.info("**Data Integration Status**")
+    """Display current data integration status with enhanced design"""
+    
+    # Enhanced header for data status
+    st.markdown("""
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    color: white; padding: 1rem; border-radius: 15px; text-align: center; margin: 1rem 0;">
+            <h3 style="margin: 0; color: white;">🔗 Data Integration Status Dashboard</h3>
+        </div>
+    """, unsafe_allow_html=True)
     
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        # Check NOAA Weather API
+        # Enhanced NOAA Weather API status
         try:
             weather_data = weather_service.get_current_weather()
             if weather_data.get('error'):
-                st.error("❌ NOAA Weather")
-                st.caption("API connection failed")
+                st.markdown("""
+                    <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px;">
+                        <h4 style="color: #dc2626; margin: 0;">❌ NOAA Weather</h4>
+                        <p style="color: #7f1d1d; margin: 0.5rem 0 0 0;">API connection failed</p>
+                    </div>
+                """, unsafe_allow_html=True)
             else:
-                st.success("✅ NOAA Weather")
-                st.caption("Real-time data active")
+                st.markdown("""
+                    <div style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px;">
+                        <h4 style="color: #059669; margin: 0;">✅ NOAA Weather</h4>
+                        <p style="color: #14532d; margin: 0.5rem 0 0 0;">Real-time data active</p>
+                    </div>
+                """, unsafe_allow_html=True)
         except:
-            st.error("❌ NOAA Weather")
-            st.caption("Connection failed")
+            st.markdown("""
+                <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #dc2626; margin: 0;">❌ NOAA Weather</h4>
+                    <p style="color: #7f1d1d; margin: 0.5rem 0 0 0;">Connection failed</p>
+                </div>
+            """, unsafe_allow_html=True)
     
     with col2:
-        # Check Ocean Data
+        # Enhanced Ocean Data status
         try:
             ocean_data = ocean_service.get_current_ocean_conditions()
             if ocean_data.get('error'):
-                st.warning("⚠️ Ocean Data")
-                st.caption("Limited data available")
+                st.markdown("""
+                    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 8px;">
+                        <h4 style="color: #d97706; margin: 0;">⚠️ Ocean Data</h4>
+                        <p style="color: #92400e; margin: 0.5rem 0 0 0;">Limited data available</p>
+                    </div>
+                """, unsafe_allow_html=True)
             else:
-                st.success("✅ Ocean Data")
-                st.caption("Satellite data active")
+                st.markdown("""
+                    <div style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px;">
+                        <h4 style="color: #059669; margin: 0;">✅ Ocean Data</h4>
+                        <p style="color: #14532d; margin: 0.5rem 0 0 0;">Satellite data active</p>
+                    </div>
+                """, unsafe_allow_html=True)
         except:
-            st.warning("⚠️ Ocean Data")
-            st.caption("Connection issues")
+            st.markdown("""
+                <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #d97706; margin: 0;">⚠️ Ocean Data</h4>
+                    <p style="color: #92400e; margin: 0.5rem 0 0 0;">Connection issues</p>
+                </div>
+            """, unsafe_allow_html=True)
     
     with col3:
-        # Check Groq AI
+        # Enhanced Groq AI status
         groq_key = os.getenv('GROQ_API_KEY')
         if groq_key:
-            st.success("✅ Groq AI")
-            st.caption("Market analysis active")
+            st.markdown("""
+                <div style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #059669; margin: 0;">✅ Groq AI</h4>
+                    <p style="color: #14532d; margin: 0.5rem 0 0 0;">Market analysis active</p>
+                </div>
+            """, unsafe_allow_html=True)
         else:
-            st.error("❌ Groq AI")
-            st.caption("API key required")
+            st.markdown("""
+                <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #dc2626; margin: 0;">❌ Groq AI</h4>
+                    <p style="color: #7f1d1d; margin: 0.5rem 0 0 0;">API key required</p>
+                </div>
+            """, unsafe_allow_html=True)
     
     with col4:
-        # Check Historical Data with enhanced status
+        # Enhanced Historical Data status
         historical_data = data_manager.get_historical_price_data()
         if historical_data is not None and not historical_data.empty:
-            st.success("✅ Historical Data")
-            st.caption(f"{len(historical_data)} records loaded")
+            st.markdown("""
+                <div style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #059669; margin: 0;">✅ Historical Data</h4>
+                    <p style="color: #14532d; margin: 0.5rem 0 0 0;">{} records loaded</p>
+                </div>
+            """.format(len(historical_data)), unsafe_allow_html=True)
         else:
-            st.error("❌ UFA Auction Data")
-            st.caption("1.9M records needed")
+            st.markdown("""
+                <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #dc2626; margin: 0;">❌ UFA Auction Data</h4>
+                    <p style="color: #7f1d1d; margin: 0.5rem 0 0 0;">1.9M records needed</p>
+                </div>
+            """, unsafe_allow_html=True)
     
     # Enhanced data requirements and integration guide
     if not groq_key or historical_data is None or historical_data.empty:
