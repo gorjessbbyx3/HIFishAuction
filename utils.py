@@ -1,42 +1,30 @@
-import re
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Union, Any
-import numpy as np
+from typing import Dict, Any, List
 import pandas as pd
+import numpy as np
 
 def format_currency(amount: float) -> str:
-    """Format amount as currency string"""
+    """Format currency values"""
     if amount is None:
         return "$0.00"
-    
-    if abs(amount) >= 1000000:
-        return f"${amount/1000000:.1f}M"
-    elif abs(amount) >= 1000:
-        return f"${amount/1000:.1f}K"
-    else:
-        return f"${amount:.2f}"
+    return f"${amount:,.2f}"
 
 def get_confidence_color(confidence: float) -> str:
-    """Get color code based on confidence level"""
+    """Get color based on confidence level"""
     if confidence >= 0.8:
         return "#28a745"  # Green
     elif confidence >= 0.6:
         return "#ffc107"  # Yellow
-    elif confidence >= 0.4:
-        return "#fd7e14"  # Orange
     else:
         return "#dc3545"  # Red
 
 def get_recommendation_icon(action: str) -> str:
     """Get icon for recommendation action"""
-    icon_mapping = {
+    icons = {
         'buy_now': '✅',
         'wait': '⏳',
-        'monitor': '🤔',
-        'sell': '💰',
-        'hold': '📊'
+        'monitor': '🤔'
     }
-    return icon_mapping.get(action, '❓')
+    return icons.get(action, '📊')
 
 def get_species_emoji(species: str) -> str:
     """Get emoji representation for fish species"""
@@ -254,13 +242,13 @@ def validate_environmental_data(data: Dict) -> Dict[str, Any]:
     """Validate environmental data and flag potential issues"""
     issues = []
     warnings = []
-    
+
     # Check for missing critical data
     critical_fields = ['wind_speed', 'sea_surface_temp', 'chlorophyll']
     for field in critical_fields:
         if field not in data or data[field] is None:
             issues.append(f"Missing {field} data")
-    
+
     # Check for extreme values that might indicate data quality issues
     if 'wind_speed' in data and data['wind_speed'] is not None:
         wind_speed = data['wind_speed']
@@ -270,28 +258,28 @@ def validate_environmental_data(data: Dict) -> Dict[str, Any]:
             warnings.append(f"Very high wind speed: {wind_speed} knots")
         elif wind_speed < 0:
             issues.append(f"Invalid wind speed: {wind_speed} knots")
-    
+
     if 'sea_surface_temp' in data and data['sea_surface_temp'] is not None:
         sst = data['sea_surface_temp']
         if sst > 35 or sst < 10:
             issues.append(f"Extreme sea surface temperature: {sst}°C")
         elif sst > 32 or sst < 15:
             warnings.append(f"Unusual sea surface temperature: {sst}°C")
-    
+
     if 'chlorophyll' in data and data['chlorophyll'] is not None:
         chlor = data['chlorophyll']
         if chlor > 10 or chlor < 0:
             issues.append(f"Invalid chlorophyll level: {chlor} mg/m³")
         elif chlor > 5:
             warnings.append(f"Very high chlorophyll level: {chlor} mg/m³")
-    
+
     if 'wave_height' in data and data['wave_height'] is not None:
         wave_height = data['wave_height']
         if wave_height > 50 or wave_height < 0:
             issues.append(f"Invalid wave height: {wave_height} ft")
         elif wave_height > 30:
             warnings.append(f"Extreme wave height: {wave_height} ft")
-    
+
     # Determine overall data quality
     if issues:
         quality = "poor"
@@ -302,7 +290,7 @@ def validate_environmental_data(data: Dict) -> Dict[str, Any]:
     else:
         quality = "good"
         quality_color = "#28a745"
-    
+
     return {
         'quality': quality,
         'quality_color': quality_color,
