@@ -584,39 +584,76 @@ def display_data_status_banner(data_manager, weather_service, ocean_service):
             st.caption("API key required")
     
     with col4:
-        # Check Historical Data
+        # Check Historical Data with enhanced status
         historical_data = data_manager.get_historical_price_data()
         if historical_data is not None and not historical_data.empty:
             st.success("✅ Historical Data")
-            st.caption("Auction data loaded")
+            st.caption(f"{len(historical_data)} records loaded")
         else:
-            st.error("❌ Historical Data")
-            st.caption("Fish auction data needed")
+            st.error("❌ UFA Auction Data")
+            st.caption("1.9M records needed")
     
-    # Data requirements notice
+    # Enhanced data requirements and integration guide
     if not groq_key or historical_data is None or historical_data.empty:
-        with st.expander("📋 Data Requirements & Integration Guide"):
-            st.markdown("""
-            **Required Data Sources for Full Functionality:**
-            
-            **Historical Fish Auction Data:**
-            - UFA Auction Sampling Data (1984–2002) from NOAA InPort
-            - Honolulu Retail Monitoring Fish Price Data (2016)
-            - WPacFIN Purchase Reports & Creel Surveys
-            
-            **Environmental Data APIs:**
-            - NOAA Weather Service API (weather.gov) ✅ Configured
-            - NOAA CoastWatch Ocean Data ⚠️ Limited
-            - Hawaii Mesonet for detailed local conditions
-            
-            **AI Analysis:**
-            - Groq API key for market analysis insights
-            
-            **Next Steps:**
-            1. Contact NOAA for historical auction data access
-            2. Integrate with Hawaii Fish Auction daily reports
-            3. Connect to PacIOOS for enhanced ocean forecasts
-            """)
+        with st.expander("📋 Comprehensive Data Integration Guide", expanded=True):
+            # Import and use NOAA data integration for detailed status
+            try:
+                from noaa_data_integration import NOAADataIntegration
+                noaa_integration = NOAADataIntegration()
+                integration_report = noaa_integration.generate_integration_report()
+                
+                st.text(integration_report)
+                
+                # Contact information section
+                st.markdown("---")
+                st.markdown("### 📞 Key Contacts for Data Access")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("""
+                    **NOAA UFA Auction Data:**
+                    - Ashley Tomita: ashley.tomita@noaa.gov
+                    - Phone: (808) 725-5693
+                    - Data Steward: keith.bigelow@noaa.gov
+                    """)
+                
+                with col2:
+                    st.markdown("""
+                    **Global Market Data:**
+                    - Undercurrent News Pricing Portal
+                    - API Access Available
+                    - Trial requests available
+                    """)
+                
+            except Exception as e:
+                # Fallback if integration module fails
+                st.markdown("""
+                **🎯 PRIMARY DATA SOURCE NEEDED:**
+                
+                **UFA Auction Sampling Data (1984-2002)**
+                - 1,923,132 records of authentic Hawaii fish auction data
+                - Price per pound and quantity sold by species
+                - Requires PIFSC non-disclosure agreement
+                - Contact: ashley.tomita@noaa.gov / (808) 725-5693
+                
+                **🌏 GLOBAL MARKET CONTEXT:**
+                
+                **Undercurrent News Seafood Pricing**
+                - Real-time global tuna market prices
+                - Weekly price updates for yellowfin/bigeye tuna
+                - Provides international market context
+                - Subscription required: undercurrentnews.com/data/
+                
+                **✅ CURRENTLY ACTIVE:**
+                - NOAA Weather Service API (real-time conditions)
+                - NOAA CoastWatch Ocean Data (satellite data)
+                - Groq AI Analysis (with API key)
+                
+                **📞 NEXT STEPS:**
+                1. Email ashley.tomita@noaa.gov for UFA auction data access
+                2. Complete PIFSC non-disclosure agreement  
+                3. Consider Undercurrent News subscription for global context
+                """)
 
 if __name__ == "__main__":
     main()

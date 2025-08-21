@@ -11,4 +11,5 @@ dependencies = [
     "schedule>=1.2.2",
     "scikit-learn>=1.7.1",
     "streamlit>=1.48.1",
+    "trafilatura>=2.0.0",
 ]
