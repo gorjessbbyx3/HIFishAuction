@@ -106,26 +106,54 @@ class DataManager:
             self.species_data = self.get_default_species_data()
     
     def get_default_seasonal_patterns(self) -> Dict:
-        """Load seasonal patterns from Hawaii Longline Observer Program data"""
-        print("Seasonal patterns require real NOAA PIFSC Longline Observer Program data")
-        print("Please integrate with:")
-        print("- Hawaii Longline Observer Program (NOAA PIFSC)")
-        print("- WPacFIN Catch Reports monthly summaries")
-        print("- Pacific Islands Ocean Ecosystem Indicators")
+        """Load seasonal patterns - demonstration data following UFA auction structure"""
+        print("Loading demonstration seasonal patterns following Hawaii longline fishery cycles")
         
-        # Return empty data structure to indicate real data needed
-        return {}
+        return {
+            'yellowfin_tuna': {
+                'price_multipliers': {1: 0.9, 2: 0.9, 3: 1.0, 4: 1.1, 5: 1.2, 6: 1.3, 
+                                    7: 1.3, 8: 1.2, 9: 1.1, 10: 1.0, 11: 0.9, 12: 0.9},
+                'catch_patterns': 'Peak summer catches due to warmer surface waters'
+            },
+            'bigeye_tuna': {
+                'price_multipliers': {1: 1.2, 2: 1.1, 3: 1.0, 4: 0.9, 5: 0.8, 6: 0.8,
+                                    7: 0.9, 8: 1.0, 9: 1.1, 10: 1.2, 11: 1.2, 12: 1.1},
+                'catch_patterns': 'Counter-seasonal to yellowfin, winter abundance'
+            },
+            'mahi_mahi': {
+                'price_multipliers': {1: 1.0, 2: 1.0, 3: 1.1, 4: 1.2, 5: 1.1, 6: 0.8,
+                                    7: 0.8, 8: 0.9, 9: 1.1, 10: 1.2, 11: 1.0, 12: 0.9},
+                'catch_patterns': 'Spring and fall peaks following warm water masses'
+            }
+        }
     
     def get_default_species_data(self) -> Dict:
-        """Load species data from Honolulu Fish Auction sources or return empty"""
-        print("Species characteristics require real Honolulu Fish Auction data")
-        print("Please integrate with:")
-        print("- UFA Auction Sampling Data (1984–2002)")
-        print("- WPacFIN Purchase Reports")
-        print("- Pelagic Fisheries Market Analysis (2022)")
+        """Load species data - demonstration data following UFA auction structure"""
+        print("Loading demonstration species data following Hawaii fish auction patterns")
         
-        # Return empty data structure to indicate real data needed
-        return {}
+        return {
+            'yellowfin_tuna': {
+                'volatility': 0.15,
+                'wind_sensitivity': 0.8,
+                'storm_impact': 0.9,
+                'base_price': 12.50,
+                'market_grade': 'Premium sashimi'
+            },
+            'bigeye_tuna': {
+                'volatility': 0.18,
+                'wind_sensitivity': 0.6,
+                'storm_impact': 0.7,
+                'base_price': 15.75,
+                'market_grade': 'High-fat premium'
+            },
+            'mahi_mahi': {
+                'volatility': 0.22,
+                'wind_sensitivity': 0.9,
+                'storm_impact': 0.95,
+                'base_price': 8.25,
+                'market_grade': 'Restaurant favorite'
+            }
+        }
     
     def store_weather_data(self, weather_data: Dict):
         """Store weather data in database"""

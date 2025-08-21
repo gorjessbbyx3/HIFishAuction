@@ -40,6 +40,13 @@ def main():
     # Data status dashboard
     display_data_status_banner(data_manager, weather_service, ocean_service)
     
+    # Show system status
+    historical_data = data_manager.get_historical_price_data()
+    if historical_data is not None and not historical_data.empty:
+        st.success(f"✅ System Active - {len(historical_data)} market records loaded")
+    else:
+        st.error("❌ System requires data initialization")
+    
     # Sidebar for controls
     with st.sidebar:
         st.header("⚙️ Controls")
