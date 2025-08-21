@@ -9,7 +9,7 @@ deploymentTarget = "autoscale"
 run = ["streamlit", "run", "app.py", "--server.port", "5000"]
 
 [workflows]
-runButton = "Hawaii Fish Auction Fixed"
+runButton = "Hawaii Fish Auction App"
 
 [[workflows.workflow]]
 name = "Project"
