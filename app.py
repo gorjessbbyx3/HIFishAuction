@@ -66,17 +66,12 @@ def main():
     (data_manager, prediction_model, weather_service, ocean_service, 
      groq_service, ecosystem_data, global_analyzer, undercurrent_api, longline_data) = init_services()
     
-    # Data status dashboard
-    display_data_status_banner(data_manager, weather_service, ocean_service)
-    
     # Show system status
     historical_data = data_manager.get_historical_price_data()
     if historical_data is not None and not historical_data.empty:
         st.success(f"✅ System Active - {len(historical_data)} market records loaded")
         
-        # Import comprehensive dashboard
-        from comprehensive_data_dashboard import display_comprehensive_data_status
-        display_comprehensive_data_status(ecosystem_data, global_analyzer, undercurrent_api, longline_data)
+        # System is ready for predictions
     else:
         st.error("❌ System requires data initialization")
     
@@ -97,10 +92,34 @@ def main():
                 except Exception as e:
                     st.error(f"Update failed: {str(e)}")
         
-        # Species selection
+        # Species selection with text input
         st.subheader("🎯 Target Species")
-        species_options = ["All Species", "Yellowfin Tuna (Ahi)", "Bigeye Tuna", "Mahi-mahi", "Opah", "Marlin"]
-        selected_species = st.selectbox("Select species:", species_options)
+        
+        # Predefined species options
+        common_species = ["Yellowfin Tuna (Ahi)", "Bigeye Tuna", "Mahi-mahi", "Opah", "Marlin", "Ono (Wahoo)", "Swordfish", "Moonfish", "Striped Marlin"]
+        
+        # Species input method selection
+        input_method = st.radio("Select species:", ["Popular Species", "Type Species Name"], horizontal=True)
+        
+        if input_method == "Popular Species":
+            selected_species = st.selectbox("Choose from common auction species:", common_species)
+        else:
+            # Text input with autocomplete suggestions
+            typed_species = st.text_input("Enter species name:", placeholder="e.g., Yellowfin Tuna, Mahi-mahi, Ono")
+            
+            if typed_species:
+                # Simple matching for suggestions
+                suggestions = [species for species in common_species if typed_species.lower() in species.lower()]
+                if suggestions:
+                    st.info(f"💡 Did you mean: {', '.join(suggestions[:3])}")
+                    selected_species = st.selectbox("Select from suggestions:", ["Use typed name"] + suggestions)
+                    if selected_species == "Use typed name":
+                        selected_species = typed_species
+                else:
+                    selected_species = typed_species
+                    st.warning(f"'{typed_species}' is not in our common species list. Predictions may be less accurate.")
+            else:
+                selected_species = common_species[0]  # Default to first option
         
         # Prediction horizon
         st.subheader("📅 Prediction Horizon")
@@ -111,7 +130,7 @@ def main():
         investment_amount = st.number_input("Planned purchase amount ($):", min_value=100, max_value=100000, value=5000, step=100)
     
     # Main dashboard tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Predictions", "📊 Market Analysis", "🌊 Conditions", "📈 Historical Data"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎯 Predictions", "📊 Market Analysis", "🌊 Conditions", "📈 Historical Data", "🔗 Data Sources"])
     
     with tab1:
         display_predictions_tab(data_manager, prediction_model, selected_species, prediction_days, investment_amount)
@@ -124,6 +143,9 @@ def main():
     
     with tab4:
         display_historical_tab(data_manager)
+    
+    with tab5:
+        display_data_sources_tab(ecosystem_data, global_analyzer, undercurrent_api, longline_data)
 
 def display_predictions_tab(data_manager, prediction_model, selected_species, prediction_days, investment_amount):
     st.header("🎯 Price Predictions & Recommendations")
@@ -422,6 +444,102 @@ def display_historical_tab(data_manager):
         
     except Exception as e:
         st.error(f"Error loading historical data: {str(e)}")
+
+def display_data_sources_tab(ecosystem_data, global_analyzer, undercurrent_api, longline_data):
+    st.header("🔗 Data Sources & Integration Status")
+    
+    st.markdown("""
+    ### 🎯 For Hawaii Fish Auction Customers
+    
+    This system integrates multiple data sources to help you make smarter purchasing decisions at the Honolulu Fish Auction. 
+    Understanding our data sources helps you trust the predictions and recommendations.
+    """)
+    
+    # Display data status banner
+    display_data_status_banner_detailed()
+    
+    st.divider()
+    
+    # Import comprehensive dashboard
+    from comprehensive_data_dashboard import display_comprehensive_data_status, display_data_integration_capabilities
+    display_comprehensive_data_status(ecosystem_data, global_analyzer, undercurrent_api, longline_data)
+    
+    st.divider()
+    
+    display_data_integration_capabilities()
+
+def display_data_status_banner_detailed():
+    """Display detailed data integration status"""
+    st.subheader("📊 Real-Time Data Integration Status")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        # Check NOAA Weather API
+        try:
+            from weather_service import WeatherService
+            weather_service = WeatherService()
+            weather_data = weather_service.get_current_weather()
+            if weather_data.get('error'):
+                st.error("❌ NOAA Weather")
+                st.caption("API connection failed")
+            else:
+                st.success("✅ NOAA Weather")
+                st.caption("Real-time conditions active")
+        except:
+            st.error("❌ NOAA Weather")
+            st.caption("Connection failed")
+    
+    with col2:
+        # Check Ocean Data
+        try:
+            from ocean_service import OceanService
+            ocean_service = OceanService()
+            ocean_data = ocean_service.get_current_ocean_conditions()
+            if ocean_data.get('error'):
+                st.warning("⚠️ Ocean Data")
+                st.caption("Limited data available")
+            else:
+                st.success("✅ Ocean Data")
+                st.caption("Satellite data active")
+        except:
+            st.warning("⚠️ Ocean Data")
+            st.caption("Connection issues")
+    
+    with col3:
+        # Check Groq AI
+        groq_key = os.getenv('GROQ_API_KEY')
+        if groq_key:
+            st.success("✅ Groq AI")
+            st.caption("Market analysis active")
+        else:
+            st.error("❌ Groq AI")
+            st.caption("API key required")
+    
+    with col4:
+        # Check Historical Data
+        from data_manager import DataManager
+        data_manager = DataManager()
+        historical_data = data_manager.get_historical_price_data()
+        if historical_data is not None and not historical_data.empty:
+            st.success("✅ Historical Data")
+            st.caption(f"{len(historical_data)} records loaded")
+        else:
+            st.error("❌ UFA Auction Data")
+            st.caption("Real data needed for accuracy")
+    
+    st.info("💡 **For Auction Customers:** Green status means reliable predictions. Yellow/Red status means predictions are based on historical patterns and may be less accurate.")
+    
+    # Investment decision guidance
+    st.markdown("""
+    ### 💰 How to Use This Information for Smarter Purchases
+    
+    **🟢 All Green Status:** High confidence predictions - good for larger investments and strategic buying decisions.
+    
+    **🟡 Mixed Status:** Moderate confidence - use predictions as guidance but rely more on your experience.
+    
+    **🔴 Many Red Indicators:** Limited data available - stick to tried-and-true buying patterns until data improves.
+    """)
 
 def generate_recommendation(prediction, investment_amount, current_conditions):
     """Generate strategic buying recommendation"""

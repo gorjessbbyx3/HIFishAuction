@@ -561,10 +561,24 @@ class PredictionModel:
             "Bigeye Tuna": "bigeye_tuna",
             "Mahi-mahi": "mahi_mahi",
             "Opah": "opah",
-            "Marlin": "marlin"
+            "Marlin": "marlin",
+            "Ono (Wahoo)": "ono",
+            "Swordfish": "swordfish",
+            "Moonfish": "moonfish",
+            "Striped Marlin": "striped_marlin"
         }
         
-        internal_species = species_mapping.get(selected_species, "yellowfin_tuna")
+        # Handle custom species names
+        if selected_species in species_mapping:
+            internal_species = species_mapping[selected_species]
+        else:
+            # Convert custom species name to internal format
+            internal_species = selected_species.lower().replace(' ', '_').replace('(', '').replace(')', '').replace('-', '_')
+            # Default to yellowfin_tuna if not found in data
+            from data_manager import DataManager
+            data_manager = DataManager()
+            if internal_species not in data_manager.species_data:
+                internal_species = "yellowfin_tuna"
         
         try:
             # Get weather and ocean forecasts

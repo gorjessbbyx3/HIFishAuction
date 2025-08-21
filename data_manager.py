@@ -137,21 +137,72 @@ class DataManager:
                 'wind_sensitivity': 0.8,
                 'storm_impact': 0.9,
                 'base_price': 12.50,
-                'market_grade': 'Premium sashimi'
+                'market_grade': 'Premium sashimi',
+                'optimal_sst_range': [24, 28]
             },
             'bigeye_tuna': {
                 'volatility': 0.18,
                 'wind_sensitivity': 0.6,
                 'storm_impact': 0.7,
                 'base_price': 15.75,
-                'market_grade': 'High-fat premium'
+                'market_grade': 'High-fat premium',
+                'optimal_sst_range': [22, 26]
             },
             'mahi_mahi': {
                 'volatility': 0.22,
                 'wind_sensitivity': 0.9,
                 'storm_impact': 0.95,
                 'base_price': 8.25,
-                'market_grade': 'Restaurant favorite'
+                'market_grade': 'Restaurant favorite',
+                'optimal_sst_range': [25, 29]
+            },
+            'opah': {
+                'volatility': 0.25,
+                'wind_sensitivity': 0.7,
+                'storm_impact': 0.8,
+                'base_price': 6.75,
+                'market_grade': 'Versatile white fish',
+                'optimal_sst_range': [20, 25]
+            },
+            'marlin': {
+                'volatility': 0.30,
+                'wind_sensitivity': 0.8,
+                'storm_impact': 0.9,
+                'base_price': 10.50,
+                'market_grade': 'Sport fish premium',
+                'optimal_sst_range': [24, 28]
+            },
+            'ono': {
+                'volatility': 0.20,
+                'wind_sensitivity': 0.8,
+                'storm_impact': 0.9,
+                'base_price': 14.25,
+                'market_grade': 'White meat delicacy',
+                'optimal_sst_range': [25, 29]
+            },
+            'swordfish': {
+                'volatility': 0.16,
+                'wind_sensitivity': 0.6,
+                'storm_impact': 0.7,
+                'base_price': 13.75,
+                'market_grade': 'Steakhouse favorite',
+                'optimal_sst_range': [22, 27]
+            },
+            'moonfish': {
+                'volatility': 0.28,
+                'wind_sensitivity': 0.8,
+                'storm_impact': 0.85,
+                'base_price': 7.50,
+                'market_grade': 'Local specialty',
+                'optimal_sst_range': [24, 28]
+            },
+            'striped_marlin': {
+                'volatility': 0.32,
+                'wind_sensitivity': 0.85,
+                'storm_impact': 0.9,
+                'base_price': 9.75,
+                'market_grade': 'Seasonal catch',
+                'optimal_sst_range': [23, 27]
             }
         }
     
